@@ -1,0 +1,115 @@
+<ion-view view-title="{{title}}">
+
+    <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear" ng-click="goBack()">
+               <i class="icon ion-chevron-left"></i>
+           </button>
+   
+           <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                   </button>
+     </ion-nav-buttons>
+   
+     <ion-nav-buttons side="right">
+       
+     </ion-nav-buttons>
+   
+   
+       <div class="bar bar-subheader item-input-inset">
+        <div class="row no-padding">
+            <div class="col col-100">
+
+        <button class="button button-block" type="button" ng-click="ScanItem()">
+            Start Scanning Item <span style="float:right;" class="icon ion-ios-barcode" ></span></button>
+        </div>
+       </div>
+       </div>
+       <ion-content class="has-header has-subheader padding">
+           <ion-refresher
+                          pulling-text="Pull to refresh..."
+                          on-refresh="getItemReleasing(rnum)"
+                          spiner="android">
+           </ion-refresher>
+
+           <div class="list">
+            
+            <label class="item item-input" >
+                <span class="input-label">IR Num</span>
+                <input type="text" ng-model="IRhead.REQNUM" readonly>
+            </label>
+            <label class="item item-input" ng-hide="IRhead.LP == 1 && IRhead.CUSNAME == ''" >
+                <span class="input-label">Customer Name</span>
+                <input type="text" ng-model="IRhead.CUSNAME" readonly>
+            </label>
+            <label class="item item-input" >
+                <span class="input-label" ng-hide="IRhead.LP == 1">Customer Name</span>
+                <span class="input-label" ng-hide="IRhead.LP == 0">Truck Type</span>
+                <input type="text" ng-model="IRhead.RQSNAME" readonly>
+            </label>
+            
+            <!-- <textarea rows="4"  type="text"
+             id="txtnotes" ng-keyup="expandText()"
+             ng-keydown="expandText()" readonly>{{IRhead.NOTES}}</textarea>-->
+
+
+             
+        </div>
+        <label class="item item-input" >
+               
+               
+            <div class="col col-100 no-padding">
+                <span class="input-label">Notes</span>
+              
+            </div>
+            
+
+        </label>
+                <ion-list>
+                    <ion-item class="item-text-wrap item" style="text-decoration:none;" ng-repeat="item in notes track by $index">
+                        <div class="row">
+                            <div class="col-10">
+                        {{$index + 1}}
+                            </div>
+                            <div class="col-90">
+                                <p>{{item}}</p>
+                            </div>
+                        </div>
+                   
+                    
+                    </ion-item>
+                </ion-list>
+               
+
+            
+
+         
+             
+          
+           
+                <p></p>
+           <p >Total number of Item : {{list.length}}</p>
+           
+         <ion-item style="text-decoration:none;"  class="item-text-wrap item-icon-right item" ng-repeat="item in list | filter:searchParam | orderBy:'ITMCDE'" ng-click="showInfoModal(item.ITMCDE);">
+               <div class="row">
+                   <div class="col-10">
+                   {{$index + 1}}
+                   </div>
+                  <div class="col-90">
+                           <p  text-wrap style="margin-left: 20px;">REQNUM  : <strong>{{item.REQNUM}}</strong></p>
+                           <p ng-hide="item.UNTMS1 != 'CS'"  text-wrap style="margin-left: 20px;">Case Code  : <strong>{{item.CsCode}}</strong></p>
+                           <p ng-hide="item.UNTMS1 != 'PCK'"  text-wrap style="margin-left: 20px;">Pack Code  : <strong>{{item.PkCode}}</strong></p>
+                           <p ng-hide="item.UNTMS1 != 'PC'"  text-wrap style="margin-left: 20px;">Piece Code  : <strong>{{item.PcCode}}</strong></p>
+                           <p text-wrap style="margin-left: 20px;">Item Code  : <strong>{{item.ITMCDE}}</strong></p>
+                           <p text-wrap style="margin-left: 20px;">Description :<strong> {{item.ITMDSC}} </strong> per {{item.UNTMS1}}</p>
+                           <p ng-hide='item.ISCASEPICK' text-wrap style="margin-left: 20px;">BreakCase</p>
+                           <p ng-hide='item.ISCASEPICK'  text-wrap style="margin-left: 20px;">Scanned : {{item.QTYSCANNED}}  / {{item.QTYTOSCAN}}</p> 
+                           
+                       </div>
+                   </div>
+           </ion-item>
+       </ion-content>
+   </ion-view>
+
+
+
+ 
+

@@ -1,0 +1,41 @@
+<ion-view view-title="{{title}}" >
+
+ <ion-nav-buttons side="left">
+    <!--<button class="button button-icon button-clear" ui-sref="app.home" style="margin-right:5px">-->
+          <button class="button button-icon button-clear" ng-click="goBack()">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                </button>
+  </ion-nav-buttons>
+
+  <ion-nav-buttons side="right">
+    
+  </ion-nav-buttons>
+
+    <div class="bar bar-subheader item-input-inset">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon"></i>
+            <input type="search" placeholder="Search" ng-model="searchZoneList" uppercased>
+        </label>
+    </div>
+    <ion-content class="has-header has-subheader padding">
+
+        <ion-refresher
+                       pulling-text="Pull to refresh..."
+                       on-refresh="getZoneList()"
+                       spinner="android">
+
+        </ion-refresher>
+            <p>Total number of zone : {{zoneList.length}}</p>
+        <ion-list>
+             
+                <ion-item class="item" style="text-decoration:none;"  ng-repeat="item in zoneList | filter:searchZoneList" ng-click="redirectMe(item.Zone)">
+                   {{$index + 1}} : {{item.Zone}} 
+              <!--      <span class="badge badge-assertive"> {{item.ItemCount}}</span>-->
+                </ion-item>
+            
+        </ion-list>
+    </ion-content>
+</ion-view>

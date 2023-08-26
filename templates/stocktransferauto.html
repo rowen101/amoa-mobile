@@ -1,0 +1,194 @@
+
+<style>
+
+    * {
+      box-sizing: border-box;
+    }
+    
+    input[type=text], select, textarea {
+      width: 100%;
+      padding: 12px;
+      
+      resize: vertical;
+    }
+    
+    label {
+      padding: 12px 12px 12px 0;
+      display: inline-block;
+    }
+    
+    input[type=submit] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      float: right;
+    }
+    
+    
+    
+    .container {
+      border-radius: 5px;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+    
+    .col-25 {
+      float: left;
+      width: 25%;
+      margin-top: 6px;
+    }
+    
+    .col-75 {
+      float: left;
+      width: 75%;
+      margin-top: 6px;
+    }
+    
+    
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    
+    
+    
+    
+    </style>
+<ion-view view-title="Stock Transfer Auto">
+    <ion-nav-buttons side="left">
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+    </ion-nav-buttons>
+
+
+    <ion-content class="padding">
+
+        <div class="list">
+
+            <form name="batchFrm" ng-submit="GetBatch(params.batchno)">
+                <div class="input-dropdown">
+                    <div class="item item-input-inset">
+                        <label class="item-input-wrapper" style="background: none !important">
+                            <span class="input-label">Batch No.</span>
+                            <input type="text" ng-model="params.batchno" required uppercased>
+                        </label>
+                        <button class="button" type="button" ng-click="ScanBarcode()">
+                            <span class="icon ion-ios-barcode"></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+
+            <form name="frm">
+                <div class="item">
+                    <p>Item Code :
+                        <strong>{{batch.ItemCode}}</strong>
+                    </p>
+                </div>
+                <div class="item">
+                    <p> Desc :
+                        <strong>{{batch.ItemDescription}}</strong>
+                    </p>
+                </div>
+                <div class="item">
+                    <p> Location :
+                        <strong>{{batch.LocationDescription}}</strong>
+                    </p>
+                </div>
+
+                <div class="item">
+                    <p> MFG Date :
+                        <strong>{{batch.ManufacturingDate | date : 'MM/dd/yyyy'}}</strong>
+                    </p>
+                </div>
+                <div class="item">
+                    <p> Expiry Date :
+                        <strong>{{batch.ExpiryDate | date : 'MM/dd/yyyy'}}</strong>
+                    </p>
+                </div>
+
+                <div class="row no-padding">
+                    <div class="col col-50 no-padding">
+                        <div class="item" style="padding:16px">
+                            <p> Batch Qty :
+                                <strong>{{batch.BatchQty}}</strong>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-50 no-padding">
+                        <div class="item" style="padding:16px;margin-bottom: 3px;">
+                            <p> UOM :
+                                <strong>{{batch.UOM}}</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="row no-padding">
+                    <div class="col col-50 no-padding">
+                        <div class="item" style="padding:16px;">
+                            <p> MFG Date :
+                                <strong>{{batch.ManufacturingDate}}</strong>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-50 no-padding">
+                        <div class="item" style="padding:16px;">
+                            <p> Expiry Date :
+                                <strong>{{batch.ExpiryDate}}</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div> -->
+
+
+
+              
+
+
+
+                <div class="input-dropdown" style="margin-top:-4px;">
+                    <div class="item item-input-inset">
+                        <label class="item-input-wrapper" style="background: none !important">
+                            <span class="input-label">Suggested Location</span>
+                            <strong>{{batch.SuggestedLocationDescription}}</strong>
+                            
+                        </label>
+                        <button class="button" type="button" ng-hide ="Scanshow()" ng-click="ScanningLocation()">
+                            <span class="icon ion-ios-barcode"></span>
+                        </button>
+                    </div>
+                </div>
+
+
+                <div>
+                    <button class="button button-block button-outline button-positive" ng-disabled="batch.SuggestedLocationDescription.$invalid" ng-show ="Scanshow()" type="button" ng-click="ScanLocation()">
+                        Scan Location <span style="float:right;" class="icon ion-ios-barcode" ></span>
+                    </button>
+                </div>
+
+                <div>
+                    <button class="button button-block button-outline button-positive" ng-disabled="batch.SuggestedLocationDescription.$invalid" ng-hide ="Scanshow()" type="button" ng-click="StockTransfer()">
+                        Transfer
+                    </button>
+                </div>
+                <div>
+                    <button class="button button-block button-outline button-positive" ng-disabled="batch.SuggestedLocationDescription.$invalid" type="button" ng-click="ClearAll()">
+                        Clear
+                    </button>
+                </div>
+
+                <div class="row no-padding">
+                  
+                </div>
+        </div>
+
+        </form>
+
+    </ion-content>
+</ion-view>

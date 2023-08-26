@@ -1,0 +1,38 @@
+<ion-view view-title="Picking list for {{IssuanceNo}}">
+      <ion-nav-buttons side="left">
+    <button class="button button-icon button-clear" ui-sref="app.2017072710052679" style="margin-right:5px">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                </button>
+  </ion-nav-buttons>
+
+  <ion-nav-buttons side="right">
+    
+  </ion-nav-buttons>
+<div class="bar bar-subheader item-input-inset">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon">
+            </i>
+            <input type="search" placeholder="Search" ng-model="searchPickList" uppercased>
+        </label>
+           <button class="button button-small" type="button" ng-click="ScanBarcode()"><span class="icon ion-ios-barcode"></span></button>
+    </div>
+    <ion-content class="has-header has-subheader padding">
+        <ion-refresher
+                       pulling-text="Pull to refresh..."
+                       on-refresh="getIssuancePickList()"
+                       spiner="android">
+        </ion-refresher>
+        <p>Total number of picklist : {{IssuancePickList.length}}</p>
+        <ion-list>
+            
+                <ion-item class="item-text-wrap item"  style="text-decoration:none;" ng-repeat="item in IssuancePickList | filter:searchPickList" ng-click="redirectMe(item.PickListID)">
+                   {{$index + 1 }} :  {{item.PickListID}} - {{item.CustomerName}}
+                    <!-- <span class="badge badge-assertive"> {{item.PalleteCount}}</span>-->
+                </ion-item>
+           
+        </ion-list>
+    </ion-content>
+</ion-view>

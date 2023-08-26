@@ -1,0 +1,92 @@
+<ion-view view-title="{{title}}">
+
+    <ion-nav-buttons side="left">
+        <!--<button class="button button-icon button-clear" ui-sref="app.home" style="margin-right:5px">-->
+              <button class="button button-icon button-clear" ng-click="goBack()">
+                <i class="icon ion-chevron-left"></i>
+            </button>
+    
+            <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                    </button>
+      </ion-nav-buttons>
+    
+      <ion-nav-buttons side="right">
+        
+      </ion-nav-buttons>
+    
+        <div class="bar bar-subheader item-input-inset">
+            <label class="item-input-wrapper" ng-hide = "Scanshow()">
+                
+                <i class="icon ion-ios-search placeholder-icon"></i>
+                <input type="search" placeholder="Search" ng-model="searchParam" uppercased>
+            </label>
+            <button class="button button-small" type="button" ng-hide = "Scanshow()"  ng-click="ScanBarcode()"><span class="icon ion-ios-barcode"></span></button>
+            
+
+            <div class="row no-padding" ng-show = "Scanshow()">
+                <div class="col col-100">
+
+            <button class="button button-block" type="button" ng-click="ScanLocation()">
+                Scan <span style="float:right;" class="icon ion-ios-barcode" ></span></button>
+            </div>
+        </div>
+        </div>
+        <ion-content class="has-header has-subheader padding">
+            <ion-refresher
+             pulling-text="Pull to refresh..."
+             on-refresh="init()"
+             spinner="android">
+            </ion-refresher>
+            <p>Total number of location : {{locList.length}}</p>
+            <div class="row" >
+                
+                <ion-toggle style="float:right;" ng-model="turnClearAppData" ng-true-value="'ASC'" ng-false-value="'DESC'" ng-change="ordering(turnClearAppData)" toggle-class="toggle-calm"> 
+                    {{turnClearAppData}}     
+                </ion-toggle>
+           
+            
+    </div>
+
+            <ion-list>
+                    <ion-item  class="item" style="text-decoration : none;" ng-repeat="item in locList | filter:searchParam" ng-click="redirectMe(item.LOCCDE)">
+                        {{$index + 1 }} : {{item.LOCCDE}}
+                        <p text-wrap style="margin-left: 20px;"> {{item.LOCDSC}}</p>
+                    </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-view>
+
+
+    <script id="templates/addtostaging.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar bar-header bar-positive">
+                <h1 class="title">Adding To Staging</h1>
+                <button class="button button-clear button-primary" ng-click="addtostaging.hide()"><span class="icon ion-close"></span></button>
+            </ion-header-bar>
+    
+    
+            
+            <ion-content class="padding">
+                
+                <p> Request No. :<strong> {{ir}}</strong></p>
+                <p> Location Code:<strong> {{loc}}</strong></p>
+               
+        
+               
+        
+               
+                <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+                    <span class="input-label">Quantity</span>
+                    
+                    <input type="number" name="qty" ng-model="qty" step="any" required>
+                    
+                </label>
+               
+                    <button class="button button-block button-positive"  ng-click="AddtoStaging(ir,loc,qty)" >Add to Staging </button>
+        
+            </ion-content>
+    
+          
+    
+        </ion-modal-view>
+    </script> 

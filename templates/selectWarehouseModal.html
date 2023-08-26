@@ -1,0 +1,32 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Select Warehouse
+            <span style="float:right; cursor:pointer;" ng-click="closeModal()"> <span class="icon ion-close"></span> </span>
+        </h1>
+    </ion-header-bar>
+    <ion-content class="padding">
+        <div class="list list-inset">
+            <!--<label class="item item-input item-select">
+                <div class="input-label">
+                Current Server 
+                </div>
+                <select ng-model="loginData.s" ng-change="changeServer()" ng-options="item.ServerName as item.ServerName  for item in serverList"></select>
+            </label>-->
+
+            <label class="item item-input item-select">
+                <div class="input-label">
+                Current warehouse 
+                </div>
+                <select ng-model="loginData.warehouseId" ng-change="changeWarehouse()" ng-options="item.serverwarehouseId as (item.description +' ('+ item.warehousecode +')' )  for item in warehouseList">
+                    
+                </select>
+            </label>
+
+
+        </div>
+
+
+
+        </div>
+    </ion-content>
+</ion-modal-view>

@@ -1,0 +1,37 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">More info of {{pickedItem.ItemCode}}
+            <span style="float:right; cursor:pointer" ng-click="closeModal('MoreInfo')"><span class="icon ion-close"></span></span>
+</h1>
+</ion-header-bar>
+<ion-content class="padding">
+
+    <p> Item  : <strong> {{pickedItem.ItemCode}} - {{pickedItem.ItemDescription}}</strong></p>
+    <p> Ref #  : <strong> {{pickedItem.ReferenceNo}}</strong></p>
+    <p> Date Mfg : <strong> {{pickedItem.ManufacturingDate | date}}</strong></p>
+    <p> Issuance # : <strong> {{pickedItem.IssuanceNo}}</strong></p>
+    <p> Customer Name  : <strong> {{pickedItem.CustomerName}}</strong></p>
+    <p> Customer Code  : <strong> {{pickedItem.CustomerCode}}</strong></p>
+
+
+    <form name="PalleteModal">
+        <ion-list>
+            <ion-checkbox ng-click="filterQty()" ng-model="filter.qty">Check All</ion-checkbox>
+            <label class="item item-input item-stacked-label">
+                    <span class="input-label">Quantity to check: {{pickedItem.ActualQty}}</span>
+                    <input type="number" name="qty" placeholder="Enter quantity shortage" ng-model="pickDetail.qty" min="1" max="{{pickedItem.TransactionQty - 1}}" placeholder="Quantity" ng-disabled="filter.qty" ng-required="!filter.qty">
+                    <span class="input-label">Actual Qty checked in {{pickedItem.Uom}} : {{pickedItem.ActualQty - pickDetail.qty}}</span>
+             </label>
+            <ion-checkbox ng-click="filterLot()" ng-model="filter.lot">Same Lot</ion-checkbox>
+            <label class="item item-input item-stacked-label">
+                    <span class="input-label">Lot Number : {{pickedItem.LotNumber}}</span>
+                    <input type="text" placeholder="Lot" ng-model="pickDetail.lot"  ng-disabled="filter.lot">
+            </label>
+        </ion-list>
+        <!--<span ng-show="PalleteModal.qty.$invalid" style="color:red">Please make sure that the <strong>Quantity</strong> is not <em>lower than</em> 1 and higher than or equal {{pickedItem.TransactionQty}}</span>-->
+        <button class="button button-block button-positive" ng-click="PickItem(pickedItem.PalleteNo)" ng-disabled="PalleteModal.qty.$invalid">Confirm Item </button>
+    </form>
+
+</ion-content>
+</ion-modal-view>
+<!--</script>-->

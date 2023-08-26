@@ -1,0 +1,141 @@
+
+
+<ion-view view-title="For Confirmation {{wc}}">
+
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear" ng-click="goBack()" style="margin-right:5px">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+</ion-nav-buttons>
+
+
+    <form name="searchForm" ng-submit="GetViews(searchParam,1)">
+        <div class="bar bar-subheader item-input-inset">
+            <label class="item-input-wrapper">
+                <i class="icon ion-ios-search placeholder-icon"></i>
+                <input type="search" placeholder="Search" ng-model="searchParam" ng-change="resetCanBeLoaded(searchParam)" uppercased>
+
+            </label>
+            <button class="button button-small" type="button" ng-click="SearchBatchNumber()"><span class="icon ion-ios-barcode"></span></button>
+        </div>
+    </form>
+
+    <!--<ion-content class="has-header has-subheader padding" delegate-handle="scroller" on-scroll="checkScroll()">-->
+    <ion-content class="has-header has-subheader padding">
+        <ion-refresher
+                       pulling-text="Pull to refresh..."
+                       on-refresh="ResetItemList();getPutAwayList(turnClearAppData)"
+                       spinner="android">
+        </ion-refresher>
+
+
+        <div class="row">
+            <div class="col"><p>Total number of item : {{itemCount}}</p>
+            </div>
+
+         
+           
+           
+       
+
+            <div class="col"> 
+                <span style="float:right;">
+                   
+                        
+                  
+                    Type  <select ng-model="type.selected" ng-change="showConfirm(turnClearAppData)">
+                    <option value="1">Sort By Batch Number</option>
+                    <option value="2">Sort By Location Code</option>
+                    <option value="3">Sort By Item Code</option>
+                    <option value="4">Sort By Item Description</option>
+
+                    </select>
+                    </div>
+            </div>
+
+            <div class="row">
+                
+                <ion-toggle ng-model="turnClearAppData" ng-true-value="'ASC'" ng-false-value="'DESC'" ng-change="showConfirm(turnClearAppData)" toggle-class="toggle-calm"> 
+                    {{turnClearAppData}}     
+                </ion-toggle>
+           
+            
+    </div>
+    
+
+        
+        <ion-list>        
+            <ion-item class="item-text-wrap item" ng-repeat="item in itemCodeList | filter:searchParam" style="text-decoration:none;" ng-click="setItemMaster(item.BatchNo);" >
+                
+              
+                    <p >{{$index + 1}}: <strong>Batch No.: {{item.BatchNo}} </strong></p>
+                    <p> Item Code: {{item.ItemCode}}</p>
+                    <p text-wrap style="margin-left: 11px;"> Description: {{item.Description}}</p>
+                    <p> Location Source:  {{item.Source}}</p>
+                    <p> Location Destination: {{item.Destination}}</p>
+                
+            </ion-item>     
+        </ion-list>
+        
+    </ion-content>
+
+</ion-view>
+
+
+<script id="templates/barcodesetupmodal.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">INFORMATION</h1>
+            <button class="button button-clear button-primary" ng-click="barcodesetupmodal.hide();"><span class="icon ion-close"></span></button>
+        </ion-header-bar>
+        <ion-content class="padding">
+            <div class="list">
+                <form name="searchLocForm" ng-submit="searchLocForm.$valid && redirectme(itemMaster)">
+                    <p>RR Number : <strong> {{itemMaster.ReferenceNo}}</strong></p>
+                    <p>Batch Number : <strong> {{itemMaster.BatchNo}}</strong></p>
+                    <p>Zone : <strong>{{itemMaster.DriveZone}}</strong></p>
+                    <p>Source Location : <strong> {{itemMaster.Source}}</strong></p>
+                    <p>Destination Location : <strong> {{itemMaster.Destination}}</strong></p>
+                    <p>Item Code : <strong> {{itemMaster.ItemCode}}</strong></p>
+                    <p>Description : <strong> {{itemMaster.Description}}</strong></p>
+                    <p>Lot Number : <strong> {{itemMaster.LotNo}}</strong></p>
+                    <p>Mfg Date : <strong> {{itemMaster.Manufacturing}}</strong></p>
+                    <p>Expiry Date : <strong> {{itemMaster.Expiry}}</strong></p>
+                    <p>Quantity : <strong> {{itemMaster.Quantity}}</strong></p>
+                
+                    
+                       
+            
+                    
+                    
+                       
+                        </label>
+                    
+                    
+
+                    <!--{{searchLocForm.$valid}}-->
+
+                    <button class="button button-block button-positive" ng-show ="Scanshow()" ng-click="ScanLocation()" >
+                        SCAN LOCATION
+                        <span style="float:right;" class="icon ion-ios-barcode" ></span>
+                    </button>
+
+                    <button class="button button-block button-positive" ng-hide ="Scanshow()" type="submit">
+                        CONFIRM
+                    </button>
+                </form>
+
+
+                                
+            </div>
+        </ion-content>
+    </ion-modal-view>
+</script>
+
+
+
+
+

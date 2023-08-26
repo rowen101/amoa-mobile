@@ -1,0 +1,131 @@
+
+
+<ion-view view-title="Locations for {{wc}}">
+
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear" ng-click="goBack()" style="margin-right:5px">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+</ion-nav-buttons>
+
+
+   
+
+    <ion-content>
+       
+       
+
+
+        <ion-refresher
+                       pulling-text="Pull to refresh..."
+                       on-refresh="loadpullMore(randomnumber)"
+                       spinner="android">
+        </ion-refresher>
+
+
+        <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+            <span class="input-label">Total number of Location : {{itemCount}}</span> 
+        </label>
+
+        <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+            
+            <div class="bar item-input-inset">
+                        <label class="item-input-wrapper">
+                           
+                            <input type="number" placeholder="Number of digits" class="no-padding" ng-model="randomnumber">
+                        </label>
+                        
+                    </div>
+                     
+                
+        </label>
+           
+
+        <div class="row no-padding">
+            <div class="col col-50 no-padding">
+               
+              <button class="button button-block button-positive" type="submit" ng-disabled="!takedata(randomnumber)" on-touch="loadMore(randomnumber)" >GENERATE RANDOM LOCATION</button>
+            
+            </div>
+            <div class="col col-50 no-padding">
+               
+              <button class="button button-block button-positive" type="submit" ng-hide="!checkCodelist()" on-touch="saveLocationCodeList(itemCodeList)" >SAVE GENERATED LOCATIONS</button>
+            
+            </div>
+         
+        </div>
+        
+
+        
+
+       
+        
+        <ion-list>        
+            <ion-item class="item-text-wrap item" ng-repeat="item in itemCodeList" style="text-decoration:none;" ng-click="setItemMaster(item.LocationCode);barcodesetupmodal.show();" >
+                
+              
+                    <p>{{$index + 1}}:  {{item.LocationCode}}</p>
+                    <p>  {{item.LocationDescription}}</p>
+                   
+                
+            </ion-item>     
+        </ion-list>
+
+
+
+        <ion-infinite-scroll
+                             immediate-check = "false"
+                             ng-if="moreDataCanBeLoaded"
+                             on-infinite="loadMore(searchParam)"
+                             distance="5%">
+        </ion-infinite-scroll>
+    </ion-content>
+
+</ion-view>
+
+
+<script id="templates/barcodesetupmodal.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">INFORMATION of {{itemMaster.LocationCode}}</h1>
+            <button class="button button-clear button-primary" ng-click="barcodesetupmodal.hide();"><span class="icon ion-close"></span></button>
+        </ion-header-bar>
+        <ion-content class="padding">
+            <div class="list">
+                <form name="searchLocForm" ng-submit="searchLocForm.$valid">
+                    <p>Location Code : <strong> {{itemMaster.LocationCode}}</strong></p>
+                    <p>Location Description : <strong> {{itemMaster.LocationDescription}}</strong></p>
+                    <p>DriveZone : <strong> {{itemMaster.DriveZone}}</strong></p>
+                    <p>Location Type : <strong> {{itemMaster.LocationType}}</strong></p>
+                   
+                
+                    
+                       
+            
+                    
+                    
+                       
+                        </label>
+                    
+                    
+
+                    <!--{{searchLocForm.$valid}}-->
+                 <!--   <button class="button button-block button-positive" type="submit" ng-disabled="!searchLocForm.$valid">
+                        CONFIRM
+                    </button>-->
+                </form>
+
+
+                                
+            </div>
+        </ion-content>
+    </ion-modal-view>
+</script>
+
+
+
+
+

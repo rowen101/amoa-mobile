@@ -1,0 +1,84 @@
+<ion-view view-title="My Checked Items {{viewHeader}}">
+
+    <ion-nav-buttons side="left">
+        <!--<button class="button button-icon button-clear" ui-sref="app.home" style="margin-right:5px">-->
+        <button class="button button-icon button-clear" ng-click="goBack()">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+
+    </ion-nav-buttons>
+
+    <div class="bar bar-subheader item-input-inset">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon"></i>
+            <input type="search" placeholder="Search" ng-model="search" uppercased>
+        </label>
+    </div>
+
+    <ion-content class="has-header has-subheader padding">
+
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="GetViews()" spiner="android">
+        </ion-refresher>
+
+        <div class="row">
+            <div class="col"> Total number of items :
+                <span ng-hide="type.selected==3"> {{PickedItems.length}}</span>
+                <span ng-show="type.selected==3"> {{PickListItems.length}}</span>
+            </div>
+            <div class="col"> 
+                <span style="float:right;">   Type  <select ng-model="type.selected" ng-change="GetViews()">
+                    <option value="1">Last Checked Transaction</option>
+                    <option value="2">Last Picklist Transacted</option>
+                    <option value="3">Select Picklist #</option>
+                    </select>
+                    </div>
+            </div>
+
+            <div ng-hide="noPickedItems">
+                <ion-list  ng-hide="type.selected==3">
+                    <ion-item class="item-text-wrap item" style="text-decoration:none;" ng-repeat="item in PickedItems | filter:search">
+                        <div class="row">
+                            <div class="col-10">
+                                {{$index + 1}}
+                            </div>
+                            <div class="col-90">
+                                <p>Item  : <strong>{{item.ItemCode}} - {{item.ItemDescription}}</strong></p>
+                                <p>Trans Qty : <strong>{{item.TransactionQty}}</strong></p>
+                                <p>Lot # : <strong>{{item.LotNumber}}</strong></p>
+                                <p>Exp. Date: <strong>{{item.ExpiryDate | date:'medium'}}</strong></p>
+                                <p>Date Picked : <strong>{{item.ModifyDate | date:'medium'}}</strong></p>
+                            </div>  
+                        </div>
+
+                    </ion-item>
+                </ion-list>
+            </div>
+
+            <ion-list  ng-show="type.selected==3">
+                <div ng-hide="noPickedItems">
+                    <ion-item class="item-text-wrap item" style="text-decoration:none;" ng-repeat="item in PickListItems | filter:search" ng-click="redirect(item.PickListID)">
+                        {{$index + 1 }} : {{item.PickListID}} - {{item.CustomerName}}
+                        <!--     <span class="badge badge-assertive"> {{item.PalleteCount}}</span>-->
+                    </ion-item>
+                </div>
+            </ion-list>
+
+
+
+            <div class="row" ng-show="noPickedItems">
+                <div class="col">
+                    <p>{{noPickedMessage}}</p>
+                </div>
+            </div>
+
+            </ion-content>
+
+        </ion-view>

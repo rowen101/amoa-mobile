@@ -1,0 +1,63 @@
+<ion-view view-title="More info for {{locMaster.LocationCode}}">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear" ui-sref="app.2017072710191419" style="margin-right:5px">
+<i class="icon ion-chevron-left"></i>
+</button>
+
+<button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                </button>
+</ion-nav-buttons>
+
+<ion-nav-buttons side="right">
+
+</ion-nav-buttons>
+
+
+<ion-content class="has-header padding">
+    <div class="list">
+        <form name="searchLocForm" ng-submit="searchLocForm.$valid && BarcodeUpdate()">
+            <div class="row">
+                <div class="col">
+                    <p> Location : <strong>{{locMaster.LocationCode}} - {{locMaster.Description}}</strong></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p> Type : <strong>{{locMaster.LocationType}}</strong></p>
+                </div>
+                <div class="col">
+                        <p> Storage Code : <strong>{{locMaster.StorageCode}}</strong></p>
+                    </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p> No Of Pallets : <strong>{{locMaster.NoOfPallets}}</strong></p>
+                </div>
+                <div class="col">
+                        <p> Capacity : <strong>{{locMaster.Capacity}}</strong></p>
+                    </div>
+            </div>
+        
+            <div class="row">
+                <div class="col">
+                    <p> Fix To Item : <strong>{{locMaster.FixToItem}}</strong></p>
+                </div>
+                <div class="col">
+                    <p> Movement : <strong>{{locMaster.Movement}}</strong></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p> Over Flow : <strong>{{locMaster.Overflow}}</strong></p>
+                </div>
+               
+                <div class="col">
+                    <p> Zone : <strong>{{locMaster.Zone}}</strong></p>
+                </div>
+            </div>
+        </form>
+        <button ng-if="locMaster.NoOfPallets != 0" class="button button-block button-light button-outline" style="color:#444;border:1px solid #444" type="button" ng-click="redirect()"> View Batch Inventory
+</button>
+</div>
+</ion-content>
+</ion-view>

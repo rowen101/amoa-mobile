@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width"
+    />
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+<link href="css/ionic.app.css" rel="stylesheet">
+-->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- Frameworks  -->
+    <script src="lib/underscore-min.js"></script>
+    <script src="lib/ng-storage.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="lib/ng-cordova.min.js"></script>
+    <script src="cordova.js"></script>
+
+    <script src="lib/moment.min.js"></script>
+    <script src="lib/dist/ionic-datepicker.bundle.min.js"></script>
+    <script src="lib/highcharts.js"></script>
+    <script src="lib/highcharts-3d.js"></script>
+    <script src="lib/highcharts-ng.js"></script>
+    <script src="lib/highcharts-theme.js"></script>
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+    <script src="js/app-config.js"></script>
+
+    <!-- Directives -->
+    <script src="js/directives/dir-uppercase.js"></script>
+    <script src="js/directives/dir-dropdown.js"></script>
+    <script src="js/directives/dir-setfocus.js"></script>
+    <script src="js/directives/dir-highchart.js"></script>
+    <!-- Services-->
+    <script src="js/services/LoginService.js"></script>
+    <script src="js/services/LoadingService.js"></script>
+    <script src="js/services/PickListService.js"></script>
+
+    <script src="js/services/IssuanceService.js"></script>
+    <script src="js/services/HttpProviderService.js"></script>
+    <script src="js/services/StockTransferService.js"></script>
+    <script src="js/services/ViewTransactionService.js"></script>
+    <script src="js/services/BatchInventoryService.js"></script>
+    <script src="js/services/RRViewService.js"></script>
+    <script src="js/services/CreateBatchService.js"></script>
+    <script src="js/services/StorageService.js"></script>
+    <script src="js/services/StockReplenishmentService.js"></script>
+
+    
+    <script src="js/services/ItemMasterService.js"></script>
+    <script src="js/services/LocationInquiryService.js"></script>
+    <script src="js/services/LocationPickingService.js"></script>
+    <script src="js/services/WavePickingService.js"></script>
+    <script src="js/services/ItemPickingService.js"></script>
+    <script src="js/services/OrderCheckingService.js"></script>
+    <script src="js/services/CycleCountService.js"></script>
+    <script src="js/services/QuickTransferService.js"></script>
+    <script src="js/services/VoicePickService.js"></script>
+    <script src="js/services/OrderReleaseService.js"></script>
+
+    <script src="js/services/ItemPhotoService.js"></script>
+    <script src="js/services/PutAwayConfirmationService.js"></script>
+
+    <script src="js/services/RCycleCountSrv.js"></script>
+    <script src="js/services/RCycleCountLocSrv.js"></script>
+    
+
+    <script src="js/services/ReceivingService.js"></script>
+
+    <script src="js/services/CustomerPickingService.js"></script>
+
+    <script src="js/services/OrderStagingService.js"></script>
+
+    <script src="js/services/AdminSrv.js"></script>
+    
+    <!--Controllers-->
+    <script src="js/controllers/AppController.js"></script>
+    <script src="js/controllers/LoginController.js"></script>
+    <script src="js/controllers/HomeController.js"></script>
+
+    <script src="js/controllers/orderpicking/ViewCtrl.js"></script>
+    <script src="js/controllers/orderpicking/ViewPalleteCtrl.js"></script>
+
+    <script src="js/controllers/StockTransferCtrl.js"></script>
+    <script src="js/controllers/RRViewController.js"></script>
+    <script src="js/controllers/RRViewWUnitCtrl.js"></script>
+    <script src="js/controllers/CreateBatchController.js"></script>
+    <script src="js/controllers/StockReplenishmentListCtrl.js"></script>
+    <script src="js/controllers/StockReplenishmentCtrl.js"></script>
+    <script src="js/controllers/StockReplenConfirmationCtrl.js"></script>
+    <script src="js/controllers/orderchecking/CheckerPicklistCtrl.js"></script>
+    <script src="js/controllers/orderchecking/CheckerPalletelistCtrl.js"></script>
+    <script src="js/controllers/orderchecking/CheckerIssuanceListCtrl.js"></script>
+    <script src="js/controllers/orderchecking/CheckerIssuancePickListCtrl.js"></script>
+    <script src="js/controllers/orderchecking/CheckerIssuanceItemListCtrl.js"></script>
+    <script src="js/controllers/orderchecking/CheckerIssuancePalleteListCtrl.js"></script>
+    <script src="js/controllers/orderchecking/CheckerViewCtrl.js"></script>
+    <script src="js/controllers/orderchecking/CheckerViewPalleteCtrl.js"></script>
+    <script src="js/controllers/orderchecking/CheckerPalleteItemListCtrl.js"></script>
+    <script src="js/controllers/ItemMasterCtrl.js"></script>
+    <script src="js/controllers/inquiry/ItemBatchInventoryCtrl.js"></script>
+    <script src="js/controllers/inquiry/LocationInquiryCtrl.js"></script>
+    <script src="js/controllers/inquiry/BatchInquiryCtrl.js"></script>
+    <script src="js/controllers/inquiry/ItemInquiryCtrl.js"></script>
+    <script src="js/controllers/inquiry/ItemMoreInfoCtrl.js"></script>
+    <script src="js/controllers/inquiry/LocInqMoreInfoCtrl.js"></script>
+    <script src="js/controllers/inquiry/LocInqBatchInvCtrl.js"></script>
+    <script src="js/controllers/locpicking/LocPickListCtrl.js"></script>
+    <script src="js/controllers/locpicking/LocPicklistPickingCtrl.js"></script>
+    <script src="js/controllers/locpicking/LocPickIRCtrl.js"></script>
+    <script src="js/controllers/locpicking/LocPickIRPickingCtrl.js"></script>
+    <script src="js/controllers/locpicking/LocPickZoneCtrl.js"></script>
+    <script src="js/controllers/locpicking/LocPickZonePickingCtrl.js"></script>
+    <script src="js/controllers/wavepicking/WaveLocListCtrl.js"></script>
+    <script src="js/controllers/wavepicking/WaveLocPickingCtrl.js"></script>
+    <script src="js/controllers/wavepicking/WaveItemListCtrl.js"></script>
+    <script src="js/controllers/wavepicking/WaveItemPickingCtrl.js"></script>
+    <script src="js/controllers/itempicking/ItemPickPickListCtrl.js"></script>
+    <script src="js/controllers/itempicking/ItemPickItemListCtrl.js"></script>
+    <script src="js/controllers/itempicking/ItemPickPickingCtrl.js"></script>
+    <script src="js/controllers/itempicking/ItemIssuanceListCtrl.js"></script>
+    <script src="js/controllers/itempicking/ItemIssuancePickListCtrl.js"></script>
+    <script src="js/controllers/itempicking/ItemIssuancePalleteListCtrl.js"></script>
+    <script src="js/controllers/itempicking/ItemZoneListCtrl.js"></script>
+    <script src="js/controllers/itempicking/ItemZonePickListCtrl.js"></script>
+    <script src="js/controllers/itempicking/ItemZonePalleteListCtrl.js"></script>
+    <script src="js/controllers/itempicking/ItemIssuanceItemListCtrl.js"></script>
+    <script src="js/controllers/PutAwayController.js"></script>
+
+    <script src="js/controllers/ItemPhotoController.js"></script>
+    <script src="js/controllers/PutAwayConfirmationController.js"></script>
+  
+    
+    <script src="js/controllers/CycleCountController.js"></script>
+    <script src="js/controllers/QuickTransferController.js"></script>
+    <script src="js/controllers/voicepick/VpLocPicklistCtrl.js"></script>
+    <script src="js/controllers/voicepick/VpLocPicklistPickingCtrl.js"></script>
+    <script src="js/controllers/voicepick/VpLocIRCtrl.js"></script>
+    <script src="js/controllers/voicepick/VpLocIRPickingCtrl.js"></script>
+    <script src="js/controllers/voicepick/VpLocZoneCtrl.js"></script>
+    <script src="js/controllers/voicepick/VpLocZonePickingCtrl.js"></script>
+    <script src="js/controllers/graph/GraphController.js"></script>
+    <script src="js/controllers/releasing/ReleasingPicklistCtrl.js"></script>
+    <script src="js/controllers/releasing/ReleasingPalleteItemListCtrl.js"></script>
+    <script src="js/controllers/releasing/ReleasingPalletelistCtrl.js"></script>
+
+    <script src="js/controllers/GeoTrackingController.js"></script>
+
+    <script src="js/controllers/RCycleCountCtrl.js"></script>
+    <script src="js/controllers/RCycleCountLocCtrl.js"></script>
+    
+
+    <script src="js/controllers/receiving/ReceivingController.js"></script>
+    <script src="js/controllers/receiving/CreateReceivingCtrl.js"></script>
+
+    <script src="js/controllers/StockTransferCfrm.js"></script>
+
+    <script src="js/controllers/StockTransferAutoCtrl.js"></script>
+
+    <script src="js/controllers/CreateBatchUnitController.js"></script>
+
+    <script src="js/controllers/myzonepick/LocPickMyZoneLocListCtrl.js"></script>
+    <script src="js/controllers/myzonepick/ItemPickMyZoneItemListCtrl.js"></script>
+    <script src="js/controllers/myzonepick/MyZoneItemPickCtrl.js"></script>
+    <script src="js/controllers/myzonepick/MyZoneLocPickCtrl.js"></script>
+
+    <script src="js/controllers/customerpicking/CustomerPickingList.js"></script>
+    <script src="js/controllers/customerpicking/CustPickByAssignZoneList.js"></script>
+    <script src="js/controllers/customerpicking/CustPickByLocList.js"></script>
+    <script src="js/controllers/customerpicking/CustPickByItemList.js"></script>
+
+    <script src="js/controllers/staging/StagingIRCtrl.js"></script>
+    <script src="js/controllers/staging/StagingLocCtrl.js"></script>
+    <script src="js/controllers/staging/StagingIRtoLocCtrl.js"></script>
+    <script src="js/controllers/staging/StagingLoctoIRCtrl.js"></script>
+    <script src="js/controllers/staging/Confirmation/StoRConfirmCtrl.js"></script>
+    <script src="js/controllers/staging/AddToStaging/LocListCtrl.js"></script>
+    <script src="js/controllers/staging/AddToStaging/IRListCtrl.js"></script>
+
+    <script src="js/controllers/releasing/ReleasingIRListCtrl.js"></script>
+    <script src="js/controllers/releasing/ReleasingLocListCtrl.js"></script>
+    <script src="js/controllers/releasing/ReleasingItemListCtrl.js"></script>
+    <script src="js/controllers/releasing/ReleasingLoctoIRListCtrl.js"></script>
+
+    <script src="js/controllers/administration/Zoning/ZoneListCtrl.js"></script>
+    <script src="js/controllers/administration/Zoning/ZoneAccessCtrl.js"></script>
+
+    <script src="js/controllers/receiving/View/BatchListCtrl.js"></script>
+    <script src="js/controllers/receiving/View/RRnumbListCtrl.js"></script>
+    <script src="js/controllers/receiving/View/ItemListCtrl.js"></script>
+    <script src="js/controllers/receiving/View/ItemBatchListCtrl.js"></script>
+
+
+
+    
+  </head>
+
+  <body ng-app="starter" class="platform-android platform-cordova platform-webview">
+    <ion-nav-view></ion-nav-view>
+  </body>
+</html>

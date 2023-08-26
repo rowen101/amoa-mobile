@@ -1,0 +1,61 @@
+<style>
+    .form-wrapper{
+      width:100%;
+      display:inline-block;
+      border:1px solid #ddd;
+      position:relative;
+      margin: 5px 0px;
+    }
+    
+    .form-wrapper 
+    input,
+    button {
+        background-color:transparent;
+        border:0;
+        padding: 5px;
+    }
+    
+    .form-wrapper input{
+      width:80%;
+      padding-right:30px; /* button padding */
+    }
+    
+    .form-wrapper button{
+        position:absolute;
+        width:15%;
+        right:0;
+        top:0;
+    }
+    
+    </style>
+    
+
+
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">For Staging
+            <span style="float:right; cursor:pointer" ng-click="stagingConfirmation.hide()"><span class="icon ion-close"></span></span>
+        </h1>
+    </ion-header-bar>
+    <ion-content class="padding">
+
+        <p> Request No. :<strong> {{ir}}</strong></p>
+        <p> Location Code:<strong> {{loc}}</strong></p>
+       
+
+       
+
+       
+            <ion-list>
+                
+                <label class="item item-input item-stacked-label">
+                    <textarea rows="4" placeholder="Remarks..." ng-model="notes" type="text" required></textarea>
+                </label>
+               
+            </ion-list>
+        <!--    <button class="button button-block"  type="button"  ng-click="ScanLocation(loc)" >Scan <span style="float:right;" class="icon ion-ios-barcode" ></span></button>
+            <button class="button button-block button-positive"  ng-click="TransfertoStaging(ir,loc,wc,emaialalias,notes)" ng-disabled="notes == ''">Transfer to Staging </button> -->
+            <button class="button button-block button-positive"  ng-click="TransfertoStaging(ir,loc,wc,emaialalias,notes)" >Transfer to Staging </button>
+
+    </ion-content>
+</ion-modal-view>

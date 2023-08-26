@@ -1,0 +1,41 @@
+<ion-view view-title="List of items in picklist {{pickid}}">
+
+    <ion-nav-buttons side="left">
+        <!--<button class="button button-icon button-clear" ui-sref="app.home" style="margin-right:5px">-->
+        <button class="button button-icon button-clear" ui-sref="app.2017072710045099">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+
+    </ion-nav-buttons>
+
+
+    <div class="bar bar-subheader item-input-inset">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon">
+            </i>
+            <input type="search" placeholder="Search" ng-model="searchPickList" uppercased>
+        </label>
+        <button class="button button-small" type="button" ng-click="ScanBarcode()"><span class="icon ion-ios-barcode"></span></button>
+    </div>
+    <ion-content class="has-header has-subheader padding">
+        <ion-refresher
+                       pulling-text="Pull to refresh..."
+                       on-refresh="getPalleteItemList()"
+                       spiner="android">
+        </ion-refresher>
+        <p>Total number of item in picklist : {{ItemList.length}}</p>
+        <ion-list>        
+            <ion-item class="item-text-wrap item" ng-repeat="item in ItemList | filter:searchPickList" style="text-decoration:none;"  ng-click="redirectMe(item.ItemCode)" >
+                {{$index + 1}} : {{item.ItemCode}} - {{item.ItemDescription}} ({{item.Uom}}) 
+                <span class="badge badge-assertive">
+                    {{item.TotalQty}}</span>
+            </ion-item>       
+        </ion-list>
+    </ion-content>
+</ion-view>

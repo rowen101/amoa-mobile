@@ -1,0 +1,273 @@
+
+
+<style>
+    /* The container */
+    .container {
+      display: block;
+      position: relative;
+      padding-left: 35px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-size: 22px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    
+    /* Hide the browser's default checkbox */
+    .container input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+    
+    /* Create a custom checkbox */
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 25px;
+      width: 25px;
+      background-color: #eee;
+    }
+    
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+      background-color: #ccc;
+    }
+    
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+      background-color: #2196F3;
+    }
+    
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+    
+    /* Show the checkmark when checked */
+    .container input:checked ~ .checkmark:after {
+      display: block;
+    }
+    
+    /* Style the checkmark/indicator */
+    .container .checkmark:after {
+      left: 9px;
+      top: 5px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+
+    .buttonUpdate{
+ background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+
+    </style>
+
+
+<ion-view view-title="Item Photo Update">
+
+    <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear" ng-click="goBack()" style="margin-right:5px">
+                <i class="icon ion-chevron-left"></i>
+            </button>
+    
+            <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+            </button>
+    </ion-nav-buttons>
+    
+    
+        <form name="searchForm" ng-submit="GetItemCodeList(searchParam,1)">
+            <div class="bar bar-subheader item-input-inset">
+                <label class="item-input-wrapper">
+                    <i class="icon ion-ios-search placeholder-icon"></i>
+                    <input type="search" placeholder="Search" ng-model="searchParam" ng-change="resetCanBeLoaded(searchParam)" uppercased>
+    
+                </label>
+                <button class="button button-small" type="button" ng-click="SearchBarcode()"><span class="icon ion-ios-barcode"></span></button>
+            </div>
+        </form>
+    
+        <!--<ion-content class="has-header has-subheader padding" delegate-handle="scroller" on-scroll="checkScroll()">-->
+        <ion-content class="has-header has-subheader padding">
+            <ion-refresher  
+                           ng-if="option == 'getall'"
+                           pulling-text="Pull to refresh..."
+                           on-refresh="ResetItemList();GetItemCodeList(searchParam,1)"
+                           spinner="android">
+            </ion-refresher>
+            <div class="row">
+                <div class="col"> <p>Total number of item : {{itemCount}}</p></div>
+               
+                
+                    
+            <span style="float:right;">
+                <button ng-show="option == 'remainsearch'"  class="buttonUpdate" ng-click="ResetItemList();GetItemCodeListCount()" type="button" > Show All List</button> </span>
+                
+           </div>
+           <div class ="row"><div class ="col"> 
+        
+            <label class="container" >
+                <input type="checkbox" checked="checked"  ng-model="checkboxshow.main" >
+                <span class="checkmark"></span>Select Items
+              </label>
+        </div>
+    
+        <span style="float:right;">
+            <button ng-show="checkboxshow.main"  class="buttonUpdate" ng-click="MultipleImageUpdate()" type="button" > Update Selected</button> </span>
+    </div>
+           
+            <ion-list>        
+                <ion-item class="item-text-wrap item" ng-repeat="item in itemCodeList | filter:searchParam" ng-style="{'background-color': testbgcolor(item.ItemCode), 'color':testcolor(item.ItemCode)}" ng-click="setItemMaster(item.ItemCode,item.image);" >
+           
+                    <img width="50" height="50" ng-src="./img/check.png"  ng-show="itemSeeClickList(item.ItemCode)" style="float:right;"  />
+                    {{$index + 1}} : {{item.ItemCode}} - {{item.ItemDescription}} 
+                    <p > <img width="30" height="30" ng-src="./img/imagenotfound.png"  ng-show="checkImage(item.image)" style="display: block;margin-left: auto;
+                        margin-right: auto;" /></p>
+                   <!--<p ng-model="selectedtoshow" ng-show="itemSeeClickList(item.ItemCode);">SELECTED</p>--> 
+                   
+                </ion-item>     
+            </ion-list>
+            <ion-infinite-scroll
+                                 immediate-check = "false"
+                                 ng-if="moreDataCanBeLoaded"
+                                 on-infinite="loadMore(searchParam)"
+                                 distance="5%">
+            </ion-infinite-scroll>
+        </ion-content>
+    
+    </ion-view>
+    
+    
+    <script id="templates/barcodesetupmodal.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar bar-header bar-positive">
+                <h1 class="title">Item Photo Update</h1>
+                <button class="button button-clear button-primary" ng-click="barcodesetupmodal.hide();"><span class="icon ion-close"></span></button>
+            </ion-header-bar>
+            <ion-content class="padding">
+                <div class="list" >
+                    
+                        
+                        <p>Item : {{itemMaster.ItemCode}} - {{itemMaster.ItemDescription}}</p>
+                        <div class="col text-center" >
+                       
+                        <img ng-show="checkMultipleImage(itemMaster.image)" width="180" height="180" ng-src="data:image/JPEG;base64,{{itemMaster.image}}"/>
+                      
+                       <img ng-show="checkDefaultImage(itemMaster.image)" width="180" height="180" ng-src="./img/amoa.png"/>
+                    </div>
+                
+                        
+                        
+                            <label class="item-input" ng-click="OpenCamera()">
+                                <p >Update Image
+                            <button  class="button button-clear button-primary" type="button" >  <span class="icon ion-ios-camera" float="right"></span></button> 
+                                </p>
+                            </label>
+                            <input ng-show = "hide"  ng-model="itemMaster.image" type="text" uppercased placeholder="New Image" required>
+                        
+    
+                        <!--{{searchLocForm.$valid}}-->
+                        <button class="button button-block button-positive" ng-click = "ImageUpdate(itemMaster.ItemCode,itemMaster.image)"  type="button" ng-disabled="!itemMaster.image" >
+                            Save Image
+                        </button>
+                    
+    
+    
+                                    
+                </div>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+
+
+
+    <script id="templates/selectedImagesetupmodal.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar bar-header bar-positive">
+                <h1 class="title">Update Multiple Items Photo</h1>
+                <button class="button button-clear button-primary" ng-click="selectedImagesetupmodal.hide();"><span class="icon ion-close"></span></button>
+            </ion-header-bar>
+            <ion-content class="padding">
+                <button class="button button-block button-positive" type="button" ng-click="ImageallUpdate()">
+                    Save All Image
+                </button>
+
+                <ion-item class="item-text-wrap item" ng-repeat="item in itemCheckList">
+                    <p>{{item.coded}} - {{itemMaster.ItemDescription}} <span style="float:right;" ng-click="ItemRemove({{item.coded}})">Remove</span> </p>
+                    <div class="col text-center">
+                        <img ng-show="checkMultipleImage(item.image)" width="180" height="180" ng-src="data:image/JPEG;base64,{{item.image}}"/>
+                       
+                        <img ng-show="checkDefaultImage(item.image)" width="180" height="180" ng-src="./img/amoa.png"/>
+                    </div>
+                
+                        
+                        
+                            <label class="item-input" ng-click="OpenMultipleCamera(item.coded,item.image)">
+                                <p >Update Image
+                            <button  class="button button-clear button-primary" type="button" >  <span class="icon ion-ios-camera" float="right"></span></button> 
+                                </p>
+
+                                <input ng-show = "hide" ng-model="item.image" type="text" uppercased placeholder="New Image" required>
+                            </label>
+                            
+                        
+                </ion-item>   
+
+
+           <!-- <div class="list">
+                    
+                        
+                    
+                        <div class="col text-center">
+                        <img ng-show="checkMultipleImage(itemMaster.MultiImage)" width="180" height="180" ng-src="data:image/JPEG;base64,{{itemMaster.MultiImage}}"/>
+                        <img ng-show="checkDefaultImage(itemMaster.MultiImage)" width="180" height="180" ng-src="../../img/amoa.png"/>
+                    </div>
+                
+                        
+                        
+                            <label class="item-input" ng-click="OpenMultipleCamera()">
+                                <p >Update Image
+                            <button  class="button button-clear button-primary" type="button" >  <span class="icon ion-ios-camera" float="right"></span></button> 
+                                </p>
+                            </label>
+                            <input ng-hide=false ng-model="itemMaster.MultiImage" type="text" uppercased placeholder="New Image" required>
+                        
+    
+                   
+                        <button class="button button-block button-positive" type="button" ng-click="ImageallUpdate(itemMaster.MultiImage)" ng-disabled="!itemMaster.MultiImage">
+                            Save Image
+                        </button>
+                  
+    
+    
+                                    
+                </div>-->
+            </ion-content>
+        </ion-modal-view>
+    </script>
+  
+
+    

@@ -1,0 +1,94 @@
+<ion-view view-title="More info for {{itemMaster.ItemCode}}">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear" ui-sref="app.2017072710084086" style="margin-right:5px">
+<i class="icon ion-chevron-left"></i>
+</button>
+
+<button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                </button>
+</ion-nav-buttons>
+
+<ion-nav-buttons side="right">
+
+</ion-nav-buttons>
+
+
+<ion-content class="has-header padding">
+    <div class="list">
+        <form name="searchLocForm" ng-submit="searchLocForm.$valid && BarcodeUpdate()">
+            <div class="row">
+                <div class="col">
+                    <p>Item : <strong>{{itemMaster.ItemCode}} - {{itemMaster.ItemDescription}}</strong></p>
+                </div>
+                 <div class="col">
+                    <p>Barcode : <strong>{{itemMaster.SubCode}}</strong></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Type : <strong>{{itemMaster.ItemType}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>Class : <strong>{{itemMaster.ItemClass}}</strong></p>
+                </div>
+            </div>
+            <div class="row">
+                 <div class="col">
+                    <p>UOM : <strong>{{itemMaster.StorageUOM}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>Movement : <strong>{{itemMaster.ItemMovement}}</strong></p>
+                </div>
+            </div>
+            <div class="row">
+                 <div class="col">
+                    <p>Min Rep : <strong>{{itemMaster.MinimumReplenishment}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>Max Rep : <strong>{{itemMaster.MaximumReplenishment}}</strong></p>
+                </div>
+            </div>
+             <div class="row">
+                 <div class="col">
+                    <p>Unit Cost : <strong>{{itemMaster.UnitCost}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>Qty/Pallet : <strong>{{itemMaster.PerPallet}}</strong></p>
+                </div>
+            </div>
+             <div class="row">
+                 <div class="col">
+                    <p>Salvage Days : <strong>{{itemMaster.SalvageDays}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>Shelf Life : <strong>{{itemMaster.ShelfLife}}</strong></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>TotalInventory : <strong>{{itemMaster.TotalInventory}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>StorageQty : <strong>{{itemMaster.StorageQty}}</strong></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Allocated Qty : <strong>{{itemMaster.AllocatedQty}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>Non Storage Qty : <strong>{{itemMaster.NonStorageQty}}</strong></p>
+                </div>
+            </div>
+            <div class="row" ng-hide="itemMaster.ExtraDescription == ''">
+                <div class="col">
+                    <p> PickSlot : <strong>{{itemMaster.ExtraDescription}}</strong></p>
+                </div>
+                
+            </div>
+        </form>
+        <button ng-if="itemMaster.TotalInventory != 0" class="button button-block button-light button-outline" style="color:#444;border:1px solid #444" type="button" ng-click="redirect()"> View Batch Inventory
+</button>
+</div>
+</ion-content>
+</ion-view>

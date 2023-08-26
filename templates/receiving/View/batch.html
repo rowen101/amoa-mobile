@@ -1,0 +1,87 @@
+<ion-view view-title="{{title}}">
+    
+        <ion-nav-buttons side="left">
+            <!--<button class="button button-icon button-clear" ui-sref="app.home" style="margin-right:5px">-->
+            <button class="button button-icon button-clear" ng-click="goBack()">
+                <i class="icon ion-chevron-left"></i>
+            </button>
+    
+            <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+            </button>
+        </ion-nav-buttons>
+    
+        <ion-nav-buttons side="right">
+    
+        </ion-nav-buttons>
+    
+        <form name="searchForm">
+       <!-- <form name="searchForm" ng-submit="SearchList(searchParam)">-->
+            <div class="bar bar-subheader item-input-inset">
+                <label class="item-input-wrapper">
+                    <i class="icon ion-ios-search placeholder-icon"></i>
+                    <input type="search" placeholder="Search" ng-model="searchParam" uppercased>
+                </label>
+                <button class="button button-small" type="button" ng-click="ScanBarcode()"><span class="icon ion-ios-barcode"></span></button> 
+            </div>
+        </form>
+    
+        <ion-content class="has-header has-subheader padding">
+            <ion-refresher
+                           pulling-text="Pull to refresh..."
+                           on-refresh="getViewBatch()"
+                           spiner="android">
+            </ion-refresher>
+            <p>Total number of Batch you Transac : {{batchlist.length}}</p>
+            <ion-list>        
+                <ion-item class="item-text-wrap item" ng-repeat="batch in batchlist | filter:searchParam" style="text-decoration:none;"   ng-click="getbatch(batch)" >
+    
+                    <div class="row">
+                        <div class="col-10">
+                            {{$index + 1}}
+                        </div>
+                        <div class="col-90">
+                            <p><strong> {{batch.RRNUMB}}</strong></p>
+                            <p>Batch No. : {{batch.PALNUM}}</p>
+                            <p>MFG Date : {{Date(batch.MFGDTE)  | date: 'MM/dd/yyyy'}}</p>
+                            <p>EXP Date : {{Date(batch.EXPDTE)  | date: 'MM/dd/yyyy'}}</p>
+                            <p>Item Code : {{batch.ITMCDE}}</p>
+                            <p>Qty : {{batch.PALQTY}}</p>
+                            <p>Date Rcv : {{Date(batch.CREA_DT) | date: 'MM/dd/yyyy hh:mm a'}}</p>
+                        </div>
+                    </div>
+    
+                    <!-- RR - suppler (PO number or Reference)-->
+                </ion-item>       
+            </ion-list>
+        </ion-content>
+    </ion-view>
+
+
+
+    <script id="templates/batchshow.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar bar-header bar-positive">
+                <h1 class="title">{{batchpick.PALNUM}}</h1>
+                <button class="button button-clear button-primary" ng-click="HideModal();"><span class="icon ion-close"></span></button>
+            </ion-header-bar>
+            <ion-content class="padding">
+                <div class="list">
+                    
+                    <p><strong> {{batchpick.RRNUMB}}</strong></p>
+                    <p>Batch No. : {{batchpick.PALNUM}}</p>
+                    <p>MFG Date : {{Date(batchpick.MFGDTE)  | date: 'MM/dd/yyyy'}}</p>
+                    <p>EXP Date : {{Date(batchpick.EXPDTE)  | date: 'MM/dd/yyyy'}}</p>
+                    <p>Item Code : {{batchpick.ITMCDE}}</p>
+                    <p>Qty : {{batchpick.PALQTY}}</p>
+                    <p>Date Rcv : {{Date(batchpick.CREA_DT) | date: 'MM/dd/yyyy hh:mm a'}}</p>
+                    <p>Created By : {{batchpick.CREA_BY}}</p>
+            
+                     
+                                    
+                </div>
+            </ion-content>
+        </ion-modal-view>
+    </script> 
+    
+    
+  

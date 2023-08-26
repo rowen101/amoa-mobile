@@ -1,0 +1,87 @@
+<ion-view view-title="Item Barcode Update">
+
+<ion-nav-buttons side="left">
+        <button class="button button-icon button-clear" ng-click="goBack()" style="margin-right:5px">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+</ion-nav-buttons>
+
+
+    <form name="searchForm" ng-submit="GetItemCodeList(searchParam,1)">
+        <div class="bar bar-subheader item-input-inset">
+            <label class="item-input-wrapper">
+                <i class="icon ion-ios-search placeholder-icon"></i>
+                <input type="search" placeholder="Search" ng-model="searchParam" ng-change="resetCanBeLoaded(searchParam)" uppercased>
+
+            </label>
+            <button class="button button-small" type="button" ng-click="SearchBarcode()"><span class="icon ion-ios-barcode"></span></button>
+        </div>
+    </form>
+
+    <!--<ion-content class="has-header has-subheader padding" delegate-handle="scroller" on-scroll="checkScroll()">-->
+    <ion-content class="has-header has-subheader padding">
+        <ion-refresher
+                       pulling-text="Pull to refresh..."
+                       on-refresh="ResetItemList();GetItemCodeList(searchParam,1)"
+                       spinner="android">
+        </ion-refresher>
+
+        <p>Total number of item : {{itemCount}}</p>
+        <ion-list>        
+            <ion-item class="item-text-wrap item" ng-repeat="item in itemCodeList | filter:searchParam" style="text-decoration:none;" ng-click="setItemMaster(item.ItemCode);barcodesetupmodal.show();" >
+                {{$index + 1}} : {{item.ItemCode}} - {{item.ItemDescription}} 
+            </ion-item>     
+        </ion-list>
+        <ion-infinite-scroll
+                             immediate-check = "false"
+                             ng-if="moreDataCanBeLoaded"
+                             on-infinite="loadMore(searchParam)"
+                             distance="5%">
+        </ion-infinite-scroll>
+    </ion-content>
+
+</ion-view>
+
+
+<script id="templates/barcodesetupmodal.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">Item Barcode Update</h1>
+            <button class="button button-clear button-primary" ng-click="barcodesetupmodal.hide();"><span class="icon ion-close"></span></button>
+        </ion-header-bar>
+        <ion-content class="padding">
+            <div class="list">
+                <form name="searchLocForm" ng-submit="searchLocForm.$valid && BarcodeUpdate()">
+                    <p>Item : {{itemMaster.ItemCode}}</p>
+                    <p>Description : {{itemMaster.ItemDescription}}</p>
+                    <p>UOM : {{itemMaster.UOM}}</p>
+                    <p>Shelf Life : {{itemMaster.ShelfLife}}</p>
+                    <p>Bar Code : {{itemMaster.BarCode}}</p>
+                    <p>Case Code : {{itemMaster.CsCode}}</p>
+                    <p>Piece Code : {{itemMaster.PcCode}}</p>
+                    <p>Pack Code : {{itemMaster.PkCode}}</p>
+                    <p>Sub Code : {{itemMaster.SubCode}}</p>
+                    <p>Is Case Pick : {{itemMaster.IsCasePick}}</p>
+                    
+                    <div class="item item-input-inset">
+                        <label class="item-input-wrapper">
+                            <input ng-model="itemMaster.NewCode" type="text" uppercased placeholder="New Barcode" required>
+                        </label>
+                        <button class="button button-small" type="button" ng-click="ScanBarcode()"><span class="icon ion-ios-barcode"></span></button>
+                    </div>
+
+                    <!--{{searchLocForm.$valid}}-->
+                    <button class="button button-block button-positive" type="submit" ng-disabled="!searchLocForm.$valid">
+                        Save
+                    </button>
+                </form>
+
+
+                                
+            </div>
+        </ion-content>
+    </ion-modal-view>
+</script>

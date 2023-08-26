@@ -1,0 +1,161 @@
+<style>
+    .row .row{
+        padding:0px;
+    }
+    .header .col {
+        background-color:lightgrey;
+    }
+
+    .col.cus {
+        border: solid 1px grey;
+        border-bottom-style: none;
+        border-right-style: none;
+    }
+
+    .col.cus:last-child {
+        border-right: solid 1px grey;
+    }
+
+    .row.cus:last-child .col {
+        border-bottom: solid 1px grey;
+    }
+
+    break{
+        word-wrap: break-word;
+    }
+</style>
+
+<ion-view view-title="Item Replenishment">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear" ng-click="goBack()" style="margin-right:5px">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+
+    </ion-nav-buttons>
+
+    <form name="searchForm" ng-submit="triggerLoading(searchParam)">
+        <div class="bar bar-subheader item-input-inset" style="overflow: visible !important">
+
+
+            <div class="input-dropdown" style="padding-right: 12px">
+                <label class="item-input-wrapper">
+                    <i class="icon ion-ios-search placeholder-icon"></i>
+                    <input type="search" placeholder="Search" ng-model="searchParam" uppercased>
+                </label>
+                <div class="dropdown" ng-show="searchParam.length > 0" style="width:99%">
+                    <div ng-repeat="item in itemList | filter :{ value : searchParam} | limitTo: 10" ng-hide="searchParam == selectedParam">
+                        <div ng-click="SelectItem(item.value)">{{item.value}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="button button-small" type="button" ng-click="ScanBarcode()"><span class="icon ion-ios-barcode"></span></button>
+        </div>
+    </form>
+
+    <ion-content class="has-header has-subheader padding">
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="GetItemForReplenishment()" spiner="android">
+        </ion-refresher>
+        <p>Total no of item to replenish. : {{itemForRepList.length}}</p>
+        <ion-list>
+
+            <div class="row cus header">
+                <div class="col cus col-20">Item Code</div>
+                <div class="col cus col-50">Desc</div>
+                <div class="col cus col-30">Fix Bin</div>
+            </div>
+            <div class="row cus" ng-repeat="item in itemForRepList | filter : searchParam ">
+                <div class="col cus col-20">
+                    <p ng-click="replenishmentmoreinfomodal.show();GetItemInfo(item.ItemCode)" style="color:dodgerblue">{{item.ItemCode}}</p>
+                </div>
+                <div class="col cus col-50 break" style="width:50%">
+                    <p>{{item.ItemDescription}}</p>
+                </div>
+                <div class="col cus col-30 break"  style="width:30%">{{item.FixBin}}</div>
+            </div>
+
+        </ion-list>
+    </ion-content>
+
+
+
+
+
+
+    <script id="templates/replenishmentmoreinfomodal.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar bar-header bar-positive">
+                <h1 class="title">More Info</h1>
+                <button class="button button-clear button-primary" ng-click="replenishmentmoreinfomodal.hide();"><span class="ion-close"></span></button>
+            </ion-header-bar>
+            <ion-content class="padding">
+                <div class="row">
+                    <div class="col">
+                        <p> Item Code  :<strong> {{item.ItemCode}}</strong></p>
+                    </div>
+                    <div class="col">
+                        <p> Desc.  :<strong> {{item.ItemDescription}}</strong></p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <p> UOM  :<strong> {{item.StorageUOM}}</strong></p>
+                    </div>
+                    <div class="col">
+                        <p> Item Movement  :<strong> {{item.ItemMovement}}</strong></p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <p> Item Type  :<strong> {{item.ItemType}}</strong></p>
+                    </div>
+                    <div class="col">
+                        <p> Item Class :<strong> {{item.ItemClass}}</strong></p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <p> Maintaining Balance  :<strong> {{item.SafetyStockLevel}}</strong></p>
+                    </div>
+                    <div class="col">
+                        <p> Salvage Days :<strong> {{item.SalvageDays}}</strong></p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <p> Min Rep  :<strong> {{item.MinimumReplenishment}}</strong></p>
+                    </div>
+                    <div class="col">
+                        <p> Max Rep :<strong> {{item.MaximumReplenishment}}</strong></p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <p> Storage Qty.  :<strong> {{item.StorageQty}}</strong></p>
+                    </div>
+                    <div class="col">
+                        <p> Pickface Qty.  :<strong> {{item.PickingQty}}</strong></p>
+                    </div>
+                </div>
+                
+                <button class="button button-block button-positive" ng-click="ReplenishItem()">
+                    Replenish Item
+                </button>
+
+            </ion-content>
+        </ion-modal-view>
+    </script>
+
+
+</ion-view>

@@ -1,0 +1,87 @@
+<ion-view view-title="Cycle Count">
+ 
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear" ng-click="goBack()">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+
+    </ion-nav-buttons>
+
+
+    <ion-content class="has-header padding">
+        <form name="frm" ng-submit="frm.$valid && CycleCount()">
+            <div class="list">
+
+                <div class="input-dropdown">
+                    <div class="item item-input-inset">
+                        <label class="item-input-wrapper" style="background: none !important">
+                            <span class="input-label">Batch No.</span>
+                            <input type="text" ng-model="batchno"  required uppercased ng-enter="GetBatchInfo(batchno)" ng-change=" ClearBatch()">
+                        </label>
+                        <button class="button button-clear" type="button" ng-click="ScanBarcode()">
+                            <span class="icon ion-ios-barcode"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <label class="item item-input">
+                    <span class="input-label">ItemCode</span>
+                    <input type="text" ng-model="batch.itemcode" readonly uppercased>
+                </label>
+
+                <label class="item item-input">
+                    <span class="input-label">Description</span>
+                    <textarea rows="4" ng-model="batch.description" type="text" readonly uppercased></textarea>
+                </label>
+
+                <label class="item item-input">
+                    <span class="input-label">Location</span>
+                    <input type="text" ng-model="batch.location" readonly uppercased>
+                </label>
+
+                <div class="row no-padding">
+                    <div class="col col-50 no-padding">
+                        <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+                            <span class="input-label">Qty</span>
+                            <input type="number" class="no-padding" ng-model="batch.qty" readonly>
+                        </label>
+                    </div>
+                    <div class="col col-50 no-padding">
+                        <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+                            <span class="input-label">Act Qty</span>
+                            <input type="number" ng-model="batch.actualqty" required>
+                        </label>
+                    </div>
+                </div>
+
+                <label class="item item-input">
+                    <span class="input-label">MFG Date</span>
+                    <input type="date" ng-model="batch.mfgdate" readonly>
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Expiry Date</span>
+                    <input type="date" ng-model="batch.expdate" readonly>
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Lot No</span>
+                    <input type="text" ng-model="batch.lotno" readonly uppercased> 
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Remarks</span>
+                    <input type="text" ng-model="batch.remarks" readonly uppercased>
+                </label>
+                <button class="button button-block button-balanced" type="submit" ng-disabled="!frm.$valid">
+                  Save
+                </button>
+            </div>
+
+        </form>
+    </ion-content>
+
+</ion-view>

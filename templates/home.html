@@ -1,0 +1,164 @@
+<style>
+  .card-label {
+    color: #ffffff;
+    font-size: 1.5em;
+    margin: 10px 0 0 0;
+  }
+
+  .card-box {
+    float: left;
+    margin: 0 10px 0 0;
+  }
+
+  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
+    .card-label {
+      font-size: 1.2em;
+      margin: 0 0 0 -50px;
+      color: #ffffff;
+    }
+  }
+</style>
+
+<ion-view view-title="Home">
+  <ion-nav-buttons side="left">
+    <button
+      ng-show="isLogged"
+      class="button button-icon button-clear ion-navicon"
+      menu-toggle="left"
+    ></button>
+  </ion-nav-buttons>
+
+  <ion-content class="padding">
+    <div id="signoutDiv">
+      <div class="row">
+        <div class="" style="margin-left:auto; margin-right:auto; width:100%  ">
+          <center>
+            <h3>
+              Welcome,<span style="font-style:italic"
+                >{{ loginData.firstname }} {{ loginData.lastName }}</span
+              >!
+            </h3>
+            <h4>
+              You're connected to {{ loginData.serverDescription }} :
+              {{ loginData.warehouseCode }} -
+              {{ loginData.warehouseDescription }}
+            </h4>
+          </center>
+
+          <div class="list card">
+            <div class="item">
+              <div style="position: absolute; top:25%; float:left;">
+                <h2>Dashboard</h2>
+                <p>{{ dateToday | date: "MMMM, dd yyyy" }}</p>
+              </div>
+              <div style="float:right;">
+                <button
+                  class="button button-balanced"
+                  ng-click="getDashboard()"
+                >
+                  <span class="icon ion-loop"></span>
+                </button>
+              </div>
+            </div>
+
+            <div class="item item-body">
+              <div ng-show="dashValue" style="text-align:center;">
+                <ion-spinner icon="spiral"></ion-spinner>
+              </div>
+      <!-- Begin:Comparison Dashboard -->
+      <div class="card "  ng-repeat="item in DashBoardData.TransComparison">
+        <div
+          class="item item-divider"
+          style="background: #0984e3;color:white;font-family: arial;"
+          ng-style="{'background-color':'{{ colorArray[$index] }}'}"
+        >
+         {{item.comparisonTitle}}
+        </div>
+        <div
+          class="item item-text-wrap"
+          style="border:1px solid #0984e3;"
+          ng-style="{'border-color':'{{ colorArray[$index] }}'}"
+        >
+          <div class="row">
+            <div class="col col-50" style="text-align:center">
+              {{item.eventPreviouse}}
+            </div>
+            <div class="col col-50" style="text-align:center">
+              {{item.eventCurrent}}
+            </div>
+          </div>
+          <div class="row">
+            <div
+              class="col col-50"
+              style="text-align:center;font-size:1.3em;border-right:1px solid;"
+            >
+              {{item.eventPreviouseTotal | number:0}}
+            </div>
+            <div
+              class="col col-50"
+              style="text-align:center;font-size:1.3em"
+            >
+            {{item.eventCurrentTotal | number:0}}
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- End: Comparison Dashboard -->
+               <!-- Dynamci dashboard -->
+              <div
+                ng-repeat="item in DashBoardData.TransTotalList"
+                ng-click="redirectMe('app.demograph',item.TransactionName)"
+                style="margin:5px;"
+              >     
+                <div class="list">
+                  <div
+                    class="item item-avatar "
+                    ng-style="{'background-color':'{{ colorArray[$index] }}'}"
+                  >
+                    <div class="item-icon-right ">
+                      <div class="card-box">
+                        <p
+                          class="card-label"
+                          style=" color: white;font-size: 1.2em;margin-top:10px;margin-bottom:10px;"
+                        >
+                          {{ item.TransDescription }} :
+                          {{ item.Total | number: 0 }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        
+            </div>
+          </div>
+
+          <div class="row">
+            <button
+              class="button button-block button-outline button-positive"
+              ng-click="openWarehouseModal()"
+            >
+              Change Warehouse
+            </button>
+          </div>
+          <div class="row">
+            <button
+              class="button  button-block button-outline button-positive"
+              ng-click="resetSearchlist()"
+            >
+              Update Item and Location List
+            </button>
+          </div>
+          <div class="row">
+            <button
+              class="button button-block button-outline button-energized"
+              ng-click="doLogout()"
+            >
+              Sign out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

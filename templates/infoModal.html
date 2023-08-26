@@ -1,0 +1,52 @@
+<style>
+    .form-wrapper{
+      width:100%;
+      display:inline-block;
+      border:1px solid #ddd;
+      position:relative;
+      margin: 5px 0px;
+    }
+    
+    .form-wrapper 
+    input,
+    button {
+        background-color:transparent;
+        border:0;
+        padding: 5px;
+    }
+    
+    .form-wrapper input{
+      width:80%;
+      padding-right:30px; /* button padding */
+    }
+    
+    .form-wrapper button{
+        position:absolute;
+        width:15%;
+        right:0;
+        top:0;
+    }
+    
+    </style>
+
+
+
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">More info of {{pickedItem.ItemCode}}
+            <span style="float:right; cursor:pointer" ng-click="infoModal.hide()"><span class="icon ion-close"></span></span>
+        </h1>
+    </ion-header-bar>
+    <ion-content class="padding">
+
+        <p> Location :<strong> {{pickedItem.LocationCode}}</strong></p>
+        <p> Description :<strong> {{pickedItem.ItemDescription}}</strong></p>
+        <p> BL No. : <strong>{{pickedItem.PalleteNo}}</strong></p>
+        <p> MFG Date : <strong>{{pickedItem.ManufacturingDate | date}}</strong></p>
+        <p> Expiry Date :<strong> {{pickedItem.ExpiryDate | date}}</strong></p>
+        <p> Lot No. :<strong> {{pickedItem.ActualLotNumber}}</strong></p>
+        <p>{{pickedItem.StorageUnit}}</p>
+
+        
+    </ion-content>
+</ion-modal-view>

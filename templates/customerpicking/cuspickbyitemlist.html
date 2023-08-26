@@ -1,0 +1,48 @@
+<ion-view view-title="{{loc}}">
+
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear" ui-sref="app.cuspickbyloclist">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+
+    </ion-nav-buttons>
+
+
+    <div class="bar bar-subheader item-input-inset">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon">
+            </i>
+            <input type="search" placeholder="Search" ng-model="searchParam" uppercased>
+        </label>
+        <button class="button button-small" type="button" ng-click="ScanBarcode()"><span class="icon ion-ios-barcode"></span></button>
+    </div>
+    <ion-content class="has-header has-subheader padding">
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="GeItemToPick()" spiner="android">
+        </ion-refresher>
+        <p>Total number of Item : {{list.length}}</p>
+        <ion-item style="text-decoration:none;" class="item-text-wrap item-icon-right item" ng-repeat="item in list | filter:searchParam | orderBy:'PickingSequence'"
+            ng-click="showMoreInfoModal(item.PalleteNo);ResetFilter();">
+            <div class="row">
+                <div class="col-10">
+                    {{$index + 1}}
+                </div>
+                <div class="col-90">
+                    
+                    <p>Item : <strong>{{item.ItemCode}} - {{item.ItemDescription}}</strong></p>
+                    <p>BL No. : <strong>{{item.PalleteNo}}</strong></p>
+                    <p>Reference : <strong>{{item.ReferenceNo}}</strong> </p>
+                    <p> PickListID : <strong>{{item.PicklistID}}</strong></p>
+                    <p>Lot # : <strong>{{item.LotNumber}}</strong> Exp. Date : <strong>{{item.ExpiryDate | date}}</strong></p>
+                    {{item.ToPick}}
+                </div>
+
+            </div>
+        </ion-item>
+    </ion-content>
+</ion-view>

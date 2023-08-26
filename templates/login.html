@@ -1,0 +1,135 @@
+<style>
+  option {
+    text-align: left;
+  }
+
+  
+
+  * {
+      box-sizing: border-box;
+    }
+    
+    input[type=text], select, textarea {
+      width: 100%;
+      padding: 12px;
+      
+      resize: vertical;
+    }
+    
+    label {
+      padding: 12px 12px 12px 0;
+      display: inline-block;
+    }
+    
+    input[type=submit] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      float: right;
+    }
+    
+    
+    
+    .container {
+      border-radius: 5px;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+    
+    .col-25 {
+      float: left;
+      width: 25%;
+      margin-top: 6px;
+    }
+    
+    .col-75 {
+      float: left;
+      width: 75%;
+      margin-top: 6px;
+    }
+    
+    
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+</style>
+<ion-view view-title="Login" hide-back-button="true">
+  <!-- <ion-nav-buttons side="right">
+                <button class="button button-icon ion-gear-b" ng-click="openSetting()">
+                </button>
+            </ion-nav-buttons> -->
+
+  <ion-content class="padding">
+    <ion-refresher pulling-text="Pull to refresh..." on-refresh="GetWarehouse()" spiner="android">
+    </ion-refresher>
+
+    
+
+    <form name="loginForm" ng-submit="!disableLogin && doLogin()">
+      <div class="list">
+
+        <div class="item item-input-inset">
+          <label class="item-input-wrapper" style="background: none !important">
+          <span class="input-label">Username</span>
+          <input type="text" required ng-model="loginData.username" ng-blur="GetWarehouse()" />
+        </label>
+   
+        </div>
+
+      
+         
+         
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper" style="background: none !important">
+              <span class="input-label">Password</span>
+                <!-- ng-blur="GetItemInfo(batch.itemcode)" -->
+                <input type="password" id="password" required ng-model="loginData.password" ng-hide="test" /> 
+                <input type="text" id="passwordRaw" required  ng-model="loginData.password" ng-hide="!test"/>
+            </label>
+           
+
+            <button class="button button-small" type="button" ng-click="Pass(test)">
+              <i ng-class="passtest()" style="float:right;" ></i>
+            </button>
+        </div>
+
+
+        
+
+        <!--<label class="item item-input item-select">
+                         <div class="input-label">
+                        Server
+                        </div>
+                        <select ng-model="loginData.server" required  ng-options="item.ServerName as item.ServerName  for item in serverList">
+                        </select>
+                </label>-->
+              
+                <div class="item item-input-inset">
+                <label class="item-input-wrapper item-select" style="background: none !important">
+      
+                  <div class="input-label">Warehouse</div>
+                  <select ng-model="loginData.serverwarehouseId" required
+                    ng-options="item.serverwarehouseId as (item.servername +' : '+ item.description +' ('+ item.warehousecode +')' ) for item in warehouseList">
+                  </select>
+                </label>
+              </div>
+
+        <label class="item">
+          <button class="button button-block button-positive" ng-disabled="!loginForm.$valid || disableLogin"
+            type="submit">
+            Sign in
+          </button>
+        </label>
+      </div>
+    </form>
+    <p class="assertive">{{ errorMessage }}</p>
+
+    <p>Version : 2.0.42</p>
+    
+  </ion-content>
+</ion-view>

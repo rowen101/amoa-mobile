@@ -1,0 +1,36 @@
+/* Empty. Add your own CSS if you like */
+.item .badge {
+    right: 10px;
+}
+
+.no-padding{
+    padding : 0;
+}
+
+.input-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+.input-dropdown .dropdown {
+    /*display: none;*/
+    position: absolute;
+    top: 100%;
+    left: 0;
+    max-height: 70vh;
+    overflow-y: auto;
+    margin-top: 2px;
+    background: #EEE;
+    z-index: 1;
+}
+.input-dropdown .dropdown div {
+    cursor: pointer;
+    padding: 2px 5px;
+}
+.input-dropdown input:focus + .dropdown {
+    display: block;
+}
+
+.dark-green{
+    color:darkgreen;
+}

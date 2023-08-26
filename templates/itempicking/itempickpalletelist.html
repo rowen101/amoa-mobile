@@ -1,0 +1,53 @@
+<ion-view view-title="{{itemCode}} - {{itemDesc}}">
+
+
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear" ui-sref="app.itempickitemlist" style="margin-right:5px">
+<i class="icon ion-chevron-left"></i>
+</button>
+
+<button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                </button>
+</ion-nav-buttons>
+
+<ion-nav-buttons side="right">
+
+</ion-nav-buttons>
+
+
+<div class="bar bar-subheader item-input-inset">
+    <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon">
+            </i>
+            <input type="search" placeholder="Search" ng-model="searchPalleteList" uppercased>
+        </label>
+        <button class="button button-small" type="button" ng-click="ScanBarcode()"><span class="icon ion-ios-barcode"></span></button>
+</div>
+<ion-content class="has-header has-subheader padding">
+    <ion-refresher pulling-text="Pull to refresh..." on-refresh="getPalleteList()" spiner="android">
+    </ion-refresher>
+    <p>Total number of line item : {{PalleteList.length}}</p>
+    <ion-list>
+
+        <ion-item style="text-decoration:none;" class="item-text-wrap item-icon-right item" ng-repeat="item in PalleteList | filter:searchPalleteList | orderBy:'PickingSequence'" ng-click="showMoreInfoModal(item.PalleteNo);ResetFilter();">
+            <div class="row">
+                <div class="col-10">
+                {{$index + 1}}
+                </div>
+                 <div class="col-90">
+                     <p>Location  : <strong>{{item.LocationCode}}</strong></p>
+                     <p>BL No  : <strong>{{item.PalleteNo}}</strong></p>
+                     <p>Lot # : <strong>{{item.LotNumber}}</strong></p>
+                     <p>Exp. Date  : <strong>{{item.ExpiryDate | date}}</strong></p>
+                     <p ng-show="item.BatchRemark != null">Remarks  : <strong>{{item.BatchRemark}}</strong></p>
+                     <p>{{item.ToPick}}</p>
+                </div>
+           
+                </div>
+        </ion-item>
+
+</ion-list>
+
+
+</ion-content>
+</ion-view>

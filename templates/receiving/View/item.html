@@ -1,0 +1,54 @@
+<ion-view view-title="List of Items on {{wc}}">
+    
+    <ion-nav-buttons side="left">
+        <!--<button class="button button-icon button-clear" ui-sref="app.home" style="margin-right:5px">-->
+        <button class="button button-icon button-clear" ng-click="goBack()">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+
+    </ion-nav-buttons>
+
+    <form name="searchForm">
+   <!-- <form name="searchForm" ng-submit="SearchList(searchParam)">-->
+        <div class="bar bar-subheader item-input-inset">
+            <label class="item-input-wrapper">
+                <i class="icon ion-ios-search placeholder-icon"></i>
+                <input type="search" placeholder="Search" ng-model="searchParam" uppercased>
+            </label>
+            <button class="button button-small" type="button" ng-click="ScanBarcode()"><span class="icon ion-ios-barcode"></span></button> 
+        </div>
+    </form>
+
+    <ion-content class="has-header has-subheader padding">
+        <ion-refresher
+                       pulling-text="Pull to refresh..."
+                       on-refresh="getViewItem()"
+                       spiner="android">
+        </ion-refresher>
+        <p>Total number of Items you Transac : {{itemlist.length}}</p>
+        <ion-list>        
+            <ion-item class="item-text-wrap item" ng-repeat="item in itemlist | filter:searchParam" style="text-decoration:none;"  ng-click="redirect(item.ItemCode)" >
+
+                <div class="row">
+                    <div class="col-10">
+                        {{$index + 1}}
+                    </div>
+                    <div class="col-90">
+                        <p><strong> {{item.ItemDescription}}</strong></p>
+                        <p>{{item.ItemCode}}</p>
+                    </div>
+                </div>
+
+                <!-- RR - suppler (PO number or Reference)-->
+            </ion-item>       
+        </ion-list>
+    </ion-content>
+</ion-view>
+
+

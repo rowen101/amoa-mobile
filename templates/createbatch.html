@@ -1,0 +1,340 @@
+
+<style>
+
+    * {
+      box-sizing: border-box;
+    }
+    
+    input[type=text], select, textarea {
+      width: 100%;
+      padding: 12px;
+      
+      resize: vertical;
+    }
+    
+    label {
+      padding: 12px 12px 12px 0;
+      display: inline-block;
+    }
+    
+    input[type=submit] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      float: right;
+    }
+    
+    
+    
+    .container {
+      border-radius: 5px;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+    
+    .col-25 {
+      float: left;
+      width: 25%;
+      margin-top: 6px;
+    }
+    
+    .col-75 {
+      float: left;
+      width: 75%;
+      margin-top: 6px;
+    }
+    
+    
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    
+    
+    
+    
+    </style>
+
+<ion-view view-title="Create new Batch">
+
+    <ion-nav-buttons side="left">
+        <!--<button class="button button-icon button-clear" ui-sref="app.home" style="margin-right:5px">-->
+        <button class="button button-icon button-clear" ui-sref="app.2017080110594401">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+
+    </ion-nav-buttons>
+
+
+    <ion-content class="has-header padding">
+        <form name="batchForm" ng-submit="batchForm.$valid && CreateNewBatch(batch)">
+            <span class="input-label" style="float:left;" ng-hide="batch.mfgdate ==''" ng-model="batch.numberofdaysexpiration"> {{batch.numberofdaysexpiration}}</span>
+            <span class="input-label" style="float:right;" ng-hide="batch.mfgdate ==''" ng-model="batch.freshness"> {{batch.freshness}}</span>
+            <span class="input-label" style="float:left;" ng-hide="batch.iscasepick ==''" ng-model="batch.iscasepick"> {{batch.iscasepick}}</span>
+            <div class="list">
+                <div class="input-dropdown">
+                    <div class="item item-input-inset">
+                        <label class="item-input-wrapper" style="background: none !important">
+                            <span class="input-label">Item Code</span>
+                            <!-- ng-blur="GetItemInfo(batch.itemcode)" -->
+                            <input type="text" ng-model="batch.itemcode" required uppercased ng-enter="GetItemInfo(batch.itemcode)">
+                        </label>
+                        <button class="button button-small" type="button" ng-click="ScanBarcode()">
+                            <span class="icon ion-ios-barcode"></span>
+                        </button>
+                    </div>
+
+                    <div class="dropdown" style="width: 100%; z-index:3; margin : 0px;" ng-show="batch.itemcode.length > 0">
+                        <!--ng-hide="batch.itemcode == selectedParam"-->
+                        <div ng-repeat="item in itemCodeList | filter :{ value : batch.itemcode} |  limitTo: 10" ng-hide="batch.itemcode == selectedParam">
+                            <div ng-click="GetItemInfo(item.value)">{{item.value}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <label class="item item-input">
+                    <span class="input-label">Description</span>
+                    <textarea rows="4" ng-model="batch.description" type="text" readonly></textarea>
+                </label>
+
+                <div class="row no-padding">
+                    <div class="col col-60 no-padding">
+                        <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+                            <span class="input-label">Per batch</span>
+                            <input type="number" class="no-padding" ng-model="batch.perbatch" readonly>
+                        </label>
+                    </div>
+                    <div class="col col-40 no-padding">
+                       
+                            <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+                                <span class="input-label">SL</span>
+                                <div class="row no-padding">
+                                <div class="col col-50 no-padding">
+                                <input type="number" name="shelf" ng-model="batch.sl" readonly required/>
+                            </div>
+                                <div class="col col-50 no-padding">
+                             <span class="input-label"><font size="1">{{batch.ismonthlytext}}</font></span>
+                            </div>
+                            </div>
+                            </label>
+                        
+                  <!--  <div class="col col-25 no-padding">
+                        
+                        <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+                            
+                            
+                            <input class="item-input" type="checkbox" ng-true-value="1" ng-model="batch.ismonthly"  ng-disabled="true">
+                       </label>
+                    </div>--> 
+                </div>
+            </div>
+                <label class="item item-input" ng-show="batch.totalqty > 0">
+                    <span class="input-label">Exact Quantity Entered</span>
+                    <input type="text" ng-model="batch.totalqty" readonly>
+                </label>
+
+
+                <div class="item item-input-inset-wrapper" ng-hide="!ScanQ()">
+                       
+                    
+                    <button class="button button-block" type="button" ng-click="ScanQty()" ng-disabled="batchForm.shelf.$invalid">
+                        Scan Quantity <span style="float:right;" class="icon ion-ios-barcode" ></span></button>
+                    
+                    
+                </div>
+
+                <div class="row no-padding">
+                    <div class="col col-60 no-padding">
+                        <label class="item item-input">
+                            <span class="input-label">Quantity</span>
+                            <input type="number" ng-model="batch.palqty" ng-disabled="batch.description.$invalid" ng-blur="GetPalletQtys(batch)" step="any" required >
+                          
+                       
+                            <!--     <input   type="number" ng-model="batch.palqty" ng-disabled="batch.description.$invalid" ng-blur="GetPalletQty(batch)" required >
+                            <input ng-if="(batch.palqty != '' && (batch.looseqty != '' && batch.looseqty != undefined && batch.loose == batch.pallet )) || (batch.palqty != undefined && ( batch.looseqty != '' && batch.looseqty != undefined && batch.loose == batch.pallet ))"  type="number" ng-model="batch.palqty2" ng-disabled="batch.description.$invalid" readonly required>
+                       -->
+                        </label>
+                    </div>
+                    <div  class="col col-40 no-padding">
+                        <label class="item item-input">
+                            <span class="input-label">UOM</span>
+                            <input type="text" ng-model="batch.uom"   readonly required uppercased >
+                        </label>
+                    </div>
+                </div>
+
+                
+          
+
+         <!--       <label ng-if="(batch.palqty != '' && (batch.looseqty != '' && batch.looseqty != undefined && batch.loose == batch.pallet )) || (batch.palqty != undefined && (batch.looseqty != '' && batch.looseqty != undefined && batch.loose == batch.pallet ))" class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+                    <span class="input-label">Exact Quantity</span>
+                    
+                    <input  type="number" ng-model="batch.exactpalqty" ng-disabled="batch.description.$invalid" ng-blur="GetPalletQty(batch)" required >
+                    
+                </label> -->
+                
+                <div class="item item-input-inset">
+                    <label class="item-input-wrapper" style="background: none !important">
+                
+               
+                    <span class="input-label">Batch Label No</span>
+                    <input type="text" ng-model="batch.batchno" ng-disabled="ScanBL()">
+                </label>
+                    <button class="button button-small" type="button" ng-click="ScanBatchLabel()" ng-disabled="batchForm.shelf.$invalid" ng-hide="!ScanBL()">
+                        <span class="icon ion-ios-barcode"></span>
+                       </button>
+                    </div>
+                
+              <!-- <label class="item item-input">
+                    <span class="input-label">Batch Label No</span>
+                    <input type="text" ng-model="batch.batchno" ng-disabled="batchForm.shelf.$invalid">
+                </label>-->
+
+                <div class="item item-input-inset">
+                    <label class="item-input-wrapper" style="background: none !important">
+                
+               
+                    <span class="input-label">Lot No</span>
+                    <input type="text" ng-model="batch.lotno" placeholder="{{batch.lotformat}}" ng-disabled="ScanLN()" ng-blur="GetMfgExpiry(batch)">
+                </label>
+                    <button class="button button-small" type="button" ng-click="ScanLotNo()" ng-disabled="batchForm.shelf.$invalid" ng-hide="!ScanLN()">
+                        <span class="icon ion-ios-barcode"></span>
+                       </button>
+                    </div>
+
+<!--
+                <label class="item item-input"> 
+                    
+                    <span class="input-label">Lot No</span>
+                    <input type="text"  ng-model="batch.lotno" ng-disabled="batchForm.shelf.$invalid" placeholder="{{batch.lotformat}}" ng-blur="GetMfgExpiry(batch)" uppercased required>
+                    
+                </label>-->
+                <label class="item item-input">
+                    <span class="input-label">MFG Date</span>
+                    <input type="text" ng-disabled="batchForm.shelf.$invalid" ng-click="openDatePicker1()" ng-model="batch.mfgdate" readonly required>
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Expiry Date</span>
+                    <input type="text" ng-disabled="batchForm.shelf.$invalid" ng-click="openDatePicker2()" ng-model="batch.expdate" readonly required>
+                </label>
+
+                <label class="item item-input">
+                    <span class="input-label">Label Date</span>
+                    {{dateToday | date : 'MM/dd/yyyy'}}
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Remarks</span>
+                    <input type="text" ng-model="batch.remarks" uppercased>
+                </label>
+
+
+               
+                        <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+                            <span class="input-label">Pallet Quantity</span>
+                            <input type="number" class="no-padding" ng-model="batch.pallet"  readonly required>
+                        </label>
+                  
+               
+                   
+                        <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+                            <span class="input-label">Full</span>
+                            
+                            <input type="number" name="full" ng-model="batch.full"  readonly required>
+                            
+                        </label>
+                   
+                   
+                        <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+                            <span class="input-label">Loose</span>
+                            
+                            <input type="number" name="loose" ng-model="batch.loose" step="any" readonly required>
+                            
+                        </label>
+
+                        <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+                            <span class="input-label">Loose Quantity</span>
+                            
+                            <input type="number" name="looseqty" ng-model="batch.looseqty" readonly required>
+                            
+                        </label>
+                   
+               
+
+                <label class="item item-input">
+                    <span class="input-label">No. Of Batches to Create</span>
+                    <input type="number" ng-model="batch.nobatchcreate" ng-disabled="batchForm.pallet.$invalid"  min="1" max="{{batch.pallet}}" required>
+                </label>
+                
+                <div class="row">
+                    <div class="col">
+                        <button class="button button-block button-outline button-positive" type="button" ng-click="CopyLastBatch()" ng-if="lastBatch">
+                            Copy Last Batch
+                        </button>
+                    </div>
+                </div>
+                <div class="row no-padding">
+                    <div class="col col-50">
+                        <button class="button button-block button-balanced" type="submit" ng-disabled="!batchForm.$valid">
+                            Create
+                        </button>
+                    </div>
+                    <div class="col col-50">
+                        <button class="button button-block button-assertive" type="button" ng-click="ClearBatch()">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <span class="input-label" >
+            <p style="color:blue;font-size:11px" ng-show="ValidateViewQTY()" ng-click="OpenModal()">View Qty</p>
+        </span> 
+
+    </ion-content>
+
+</ion-view>
+
+
+
+<script id="templates/ordrqty.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">{{rrnumb}}</h1>
+            <button class="button button-clear button-primary" ng-click="HideModal();"><span class="icon ion-close"></span></button>
+        </ion-header-bar>
+
+
+        
+        <ion-content >
+        
+            <ion-list>        
+                <ion-item class="item-text-wrap item" ng-repeat="item in vqtylist | filter:searchParam" style="text-decoration:none;"  >
+    
+                    <div class="row">
+                        
+                        <div class="col-100">
+                            <p> {{item.ITMDSC}} - {{item.ITMCDE}}</p>
+                            <p  text-wrap style="margin-left: 20px;"> Quantity : {{item.ORDQTY}} {{item.QTYUOM}}</p>
+                        </div>
+                    </div>
+    
+                   
+                </ion-item>       
+            </ion-list>
+        </ion-content>
+
+
+
+    </ion-modal-view>
+</script> 

@@ -1,0 +1,81 @@
+<style>
+    .form-wrapper{
+      width:100%;
+      display:inline-block;
+      border:1px solid #ddd;
+      position:relative;
+      margin: 5px 0px;
+    }
+    
+    .form-wrapper 
+    input,
+    button {
+        background-color:transparent;
+        border:0;
+        padding: 5px;
+    }
+    
+    .form-wrapper input{
+      width:80%;
+      padding-right:30px; /* button padding */
+    }
+    
+    .form-wrapper button{
+        position:absolute;
+        width:15%;
+        right:0;
+        top:0;
+    }
+    
+    </style>
+    
+
+
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">More info of {{pickedItem.ItemCode}}
+            <span style="float:right; cursor:pointer" ng-click="moreInfoModal.hide()"><span class="icon ion-close"></span></span>
+        </h1>
+    </ion-header-bar>
+    <ion-content class="padding">
+
+        <p> Location :<strong> {{pickedItem.LocationCode}}</strong></p>
+        <p> Description :<strong> {{pickedItem.ItemDescription}}</strong></p>
+        <p> BL No. : <strong>{{pickedItem.PalleteNo}}</strong></p>
+        <p> MFG Date : <strong>{{pickedItem.ManufacturingDate | date}}</strong></p>
+        <p> Expiry Date :<strong> {{pickedItem.ExpiryDate | date}}</strong></p>
+        <p> Lot No. :<strong> {{pickedItem.ActualLotNumber}}</strong></p>
+
+        <p>Bar Code :<strong>{{pickedItem.BarCode}}</strong></p>
+        <p>Case Code : <strong>{{pickedItem.CsCode}}</strong></p>
+        <p>Piece Code :<strong> {{pickedItem.PcCode}}</strong></p>
+        <p>Pack Code :<strong> {{pickedItem.PkCode}}</strong></p>
+        <p>Sub Code : <strong>{{pickedItem.SubCode}}</strong></p>
+       
+
+        <p>{{pickedItem.StorageUnit}}</p>
+        <p>{{pickedItem.IsCasePick ? "Case Pick":"BreakCase"}}</p>
+
+        <div class="form-wrapper">
+            <input class="form-control" id="lotCode" ng-model="pickDetail.lot" type="text" placeholder="Lot" uppercased/><button ng-click="pickDetail.lot = ''"  set-focus="lotCode">Clear</button>
+        </div>
+
+
+        <form name="PalleteModal">
+            <ion-list>
+                <ion-checkbox ng-click="filterQty()" ng-model="filter.qty">Pick All</ion-checkbox>
+                <label class="item item-input item-stacked-label">
+                  <span class="input-label">{{pickedItem.ToPick}}</span><br>
+                  <span style="color:#444;font-size:16px">Enter Qty not pick in {{pickedItem.Uom}}</span>
+                    <input type="number" name="qty" placeholder="Enter quantity not picked" ng-model="pickDetail.qty" min="1" max="{{pickedItem.TransactionQty - 1}}" placeholder="Quantity" ng-disabled="filter.qty || pickedItem.TransactionQty == 1" ng-required="!filter.qty">
+                    <span class="input-label">Actual Qty picked in {{pickedItem.Uom}} : {{pickedItem.TransactionQty - pickDetail.qty}}</span>
+                    
+                </label>
+               
+            </ion-list>
+            <button class="button button-block" type="button" ng-hide = "userrole == 'ADMIN'? false : !Scanshow()" ng-click="ScanLocation(pickedItem)" ng-disabled="PalleteModal.qty.$invalid">Scan <span style="float:right;" class="icon ion-ios-barcode" ></span></button>
+            <button class="button button-block button-positive" ng-hide = "userrole == 'ADMIN'? false : Scanshow()" ng-click="PickItem(pickedItem.PalleteNo)" ng-disabled="PalleteModal.qty.$invalid">Pick Item </button>
+        </form>
+
+    </ion-content>
+</ion-modal-view>

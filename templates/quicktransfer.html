@@ -1,0 +1,124 @@
+<ion-view view-title="Quick Transfer">
+    <ion-nav-buttons side="left">
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+    </ion-nav-buttons>
+
+
+    <ion-content class="padding">
+
+        <div class="list">
+
+            <form name="batchFrm" ng-submit="GetBatchInquiry(params.batchno)">
+                <div class="input-dropdown">
+                    <div class="item item-input-inset">
+                        <label class="item-input-wrapper" style="background: none !important">
+                            <span class="input-label">Batch No.</span>
+                            <input type="text" ng-model="params.batchno" required uppercased>
+                        </label>
+                        <button class="button" type="button" ng-click="ScanBarcode()">
+                            <span class="icon ion-ios-barcode"></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+
+            <form name="frm">
+                <div class="item">
+                    <p>Item Code :
+                        <strong>{{batch.ItemCode}}</strong>
+                    </p>
+                </div>
+                <div class="item">
+                    <p> Desc :
+                        <strong>{{batch.ItemDescription}}</strong>
+                    </p>
+                </div>
+                <div class="item">
+                    <p> Location :
+                        <strong>{{batch.LocationCode}}</strong>
+                    </p>
+                </div>
+
+                <div class="item">
+                    <p> MFG Date :
+                        <strong>{{batch.ManufacturingDate | date : 'MM/dd/yyyy'}}</strong>
+                    </p>
+                </div>
+                <div class="item">
+                    <p> Expiry Date :
+                        <strong>{{batch.ExpiryDate | date : 'MM/dd/yyyy'}}</strong>
+                    </p>
+                </div>
+
+                <div class="row no-padding">
+                    <div class="col col-50 no-padding">
+                        <div class="item" style="padding:16px">
+                            <p> Batch Qty :
+                                <strong>{{batch.BatchQty}}</strong>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-50 no-padding">
+                        <div class="item" style="padding:16px;margin-bottom: 3px;">
+                            <p> UOM :
+                                <strong>{{batch.UOM}}</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="row no-padding">
+                    <div class="col col-50 no-padding">
+                        <div class="item" style="padding:16px;">
+                            <p> MFG Date :
+                                <strong>{{batch.ManufacturingDate}}</strong>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-50 no-padding">
+                        <div class="item" style="padding:16px;">
+                            <p> Expiry Date :
+                                <strong>{{batch.ExpiryDate}}</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div> -->
+
+
+
+
+                <div class="input-dropdown" style="margin-top:-4px;">
+                    <div class="item item-input-inset">
+                        <label class="item-input-wrapper" style="background: none !important">
+                            <span class="input-label">Location</span>
+                            <input type="text" ng-model="params.location" required>
+                        </label>
+                        <button class="button" type="button" ng-click="ScanLocation()">
+                            <span class="icon ion-ios-barcode"></span>
+                        </button>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row no-padding">
+                    <div class="col col-50">
+                        <button class="button button-block button-balanced" type="submit" ng-disabled=" !batch.BatchNo|| !params.location"  ng-click="StockTransfer()">
+                            Transfer
+                        </button>
+                    </div>
+                    <div class="col col-50">
+                        <button class="button button-block button-outline button-positive" type="button" ng-click="ClearAll()">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+        </div>
+
+        </form>
+
+    </ion-content>
+</ion-view>

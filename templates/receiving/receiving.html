@@ -1,0 +1,258 @@
+
+<style>
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 5px;
+    right: 0;
+    margin-right: 2px;
+    margin-left: 2px;
+}
+
+</style>
+
+<ion-view view-title="List of RR on {{wc}}">
+
+    <ion-nav-buttons side="left">
+        <!--<button class="button button-icon button-clear" ui-sref="app.home" style="margin-right:5px">-->
+        <button class="button button-icon button-clear" ng-click="goBack()">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+
+    </ion-nav-buttons>
+
+    <form name="searchForm">
+   <!-- <form name="searchForm" ng-submit="SearchList(searchParam)">-->
+        <div class="bar bar-subheader item-input-inset">
+            <label class="item-input-wrapper">
+                <i class="icon ion-ios-search placeholder-icon"></i>
+                <input type="search" placeholder="Search" ng-model="searchParam" uppercased>
+            </label>
+            <button class="button button-small" type="button" ng-click="ScanBarcode()"><span class="icon ion-ios-barcode"></span></button> 
+        </div>
+    </form>
+
+    <ion-content class="has-header has-subheader padding">
+        <ion-refresher
+                       pulling-text="Pull to refresh..."
+                       on-refresh="GetReceivingList()"
+                       spiner="android">
+        </ion-refresher>
+        <p>Total number of Open RR : {{itemCodeList.length}}</p>
+        <ion-list>        
+            <ion-item class="item-text-wrap item" ng-repeat="item in itemCodeList | filter:searchParam" style="text-decoration:none;"  ng-click="getdata(item.RRNUMB);redirectMe(item.RRNUMB)" >
+
+                <div class="row">
+                    <div class="col-10">
+                        {{$index + 1}}
+                    </div>
+                    <div class="col-90">
+                        <p> {{item.RRNUMB}} - {{item.SUPNAME}} </p>
+                        <p>Receiving Type : {{item.TRNCDE}}</p>
+                        <p>Document No. : {{item.TRNDOC}}</p>
+                    </div>
+                </div>
+
+                <!-- RR - suppler (PO number or Reference)-->
+            </ion-item>       
+        </ion-list>
+    </ion-content>
+</ion-view>
+
+
+<script id="templates/receivingmodal.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">Receiving</h1>
+            <button class="button button-clear button-primary" ng-click="HideModal();"><span class="icon ion-close"></span></button>
+        </ion-header-bar>
+        
+        <ion-content class="has-header padding">
+            
+               
+                <div class="list">
+
+                            <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+                                <span class="input-label">RR Number</span>
+                                <input type="text" class="no-padding" ng-model="itemMaster.RRNUMB" readonly>
+                            </label>
+                       
+                            <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+                                <span class="input-label">SRC</span>
+                                
+                                <input type="text" name="shelf" ng-model="itemMaster.SOURCE" readonly>
+                                
+                            </label>               
+                            <label class="item item-input">
+                        
+                                <span class="input-label">Receiving Type</span>
+                                <input type="text"  ng-model="itemMaster.TRNCDE" readonly>
+                                
+                            </label>                 
+                    <label class="item item-input">
+                        <span class="input-label">Date Receive</span>
+                        <input type="text" ng-model="itemMaster.RRDATE" readonly>
+                    </label>
+                   
+                    <label class="item item-input">
+                        
+                        <span class="input-label">Supplier Name</span>
+                        <textarea rows="3"  ng-model="itemMaster.SUPNAME" type="text" readonly></textarea>
+                        
+                    </label>
+
+                    <label class="item item-input">
+                        
+                        <span class="input-label">Status</span>
+                        <input type="text"  ng-model="itemMaster.RRSTAT" readonly>
+                        
+                    </label>
+
+                    <label class="item item-input">
+                        
+                        <span class="input-label">Document Number</span>
+                        <input type="text"  ng-model="itemMaster.TRNDOC">
+                        
+                    </label>
+
+
+                    <label class="item item-input">
+                        
+                        <span class="input-label">Reference Number</span>
+                        <input type="text"  ng-model="itemMaster.SRCREF" required>
+                        
+                    </label>
+
+                   
+
+                
+
+                    <label class="item item-input">
+                        <span class="input-label">Remarks</span>
+                        <textarea rows="4" ng-model="itemMaster.RREMRK" type="text"></textarea>
+                    </label>
+                    
+
+                    <div class="row no-padding">
+                        <div class="col col-50 no-padding">
+                            <label class="item">
+                            <button class="button button-block button-positive" ng-disabled="postDisabled()" ng-click = "PostCheckReceiving(itemMaster.RRNUMB)"  type="button" >
+                                VALIDATE
+                            </button>
+                        </label>
+                        </div>
+                        <div class="col col-50 no-padding">
+                            <label class="item"> 
+                            <button class="button button-block button-positive" ng-disabled="updateDisabled()" ng-click = "UpdateReceive(itemMaster.RRNUMB)"  type="button" >
+                                UPDATE
+                            </button>
+                        </label>
+                        </div>
+                     
+                    </div>
+
+
+                </div>
+            
+        </ion-content>
+    </ion-modal-view>
+</script> 
+
+
+
+<script id="templates/erroritemsmodal.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">Item List</h1>
+            <button class="button button-clear button-primary" ng-click="erroritemsmodal.hide();"><span class="icon ion-close"></span></button>
+        </ion-header-bar>
+        
+        <ion-content scroll="true">
+       
+        <div class="row no-padding">
+            <div class="col col-100 no-padding">
+                <label class="item item-text-wrap" ng-click="openpersonnel();">
+                   <p style="color:red;"><strong> Mismatch Quantity between Order({{ordersum}}) 
+                          and Batched({{batchsum}}). Do you want to proceed with the validation? </strong></p>
+                   <p style="color:blue;text-decoration:underline;">(View Personnel Involve)</p>
+                </label>
+            </div>
+        </div>
+  
+      
+        <ion-list>
+           
+            <ion-item-sliding class="item-text-wrap item" ng-repeat="item in dcpy | filter:searchParam" style="text-decoration:none;">
+              
+                <div class="row">
+                                
+                    <div class="col-100">
+                        <p text-wrap> {{item.ITMDSC}}</p>
+                        <p text-wrap> {{item.ITMCDE}}</p>
+                              
+                                    <p  text-wrap style="margin-left: 15px;"> {{item.ORDQTY}}</p>
+                                                   
+                    </div>
+                </div>
+            </ion-item-sliding>
+            
+          </ion-list>
+          
+        </ion-content>
+
+        <ion-footer-bar>
+            <div class="col col-100 no-padding">
+            <label class="footer">
+               
+                    <button class="button button-block button-positive" ng-disabled="postDisabled()" ng-click = "PostReceive(itemMaster.RRNUMB)"  type="button" >
+                        VALIDATE
+                   </button>
+               
+            </label>
+            </div>
+        </ion-footer-bar>
+
+    </ion-modal-view>
+</script> 
+
+<script id="templates/showcheckers.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">Checkers Involve</h1>
+            <button class="button button-clear button-primary" ng-click="closepersonnel()"><span class="icon ion-close"></span></button>
+        </ion-header-bar>
+        
+        <ion-content scroll="true">
+
+        <ion-list>
+           
+            <ion-item-sliding class="item-text-wrap item" ng-repeat="item in checkers | filter:searchParam" style="text-decoration:none;">
+              
+                <div class="row">
+                                
+                    <div class="col-100">
+                        
+                       
+                       
+                        <ptext-wrap> {{item.Name}}</p>
+                               
+                                    <p  text-wrap style="margin-left: 15px;"> {{item.user}}</p>
+                                
+                           
+                       
+                    </div>
+                </div>
+            </ion-item-sliding>
+            
+          </ion-list>
+          
+        </ion-content>
+
+    </ion-modal-view>
+</script> 

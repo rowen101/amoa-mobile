@@ -1,0 +1,415 @@
+
+<style>
+.buttonUpdate{
+    background-color: #4CAF50;
+     border: none;
+     color: white;
+     padding: 20px;
+     text-align: center;
+     text-decoration: none;
+     display: inline-block;
+     font-size: 16px;
+     margin: 4px 2px;
+     cursor: pointer;
+     border-radius: 8px;
+   }
+
+.wrapping{
+    word-wrap: break-word;
+}
+
+/** textarea {
+  width: 100%;
+  padding-right: 8px;
+    padding-left: 8px;
+  
+  background-color: #EEEEEE;
+  resize: none;
+
+
+  border-color: #403E39;
+        border-width: thin;
+        border-style: solid;
+        border-radius: 3px;
+}
+*/
+
+
+</style>
+<ion-view view-title="{{ccid}}">
+
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear" ng-click="goBack()" style="margin-right:5px">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+</ion-nav-buttons>
+    <ion-content>
+        <ion-refresher
+                       pulling-text="Pull to refresh..."
+                       on-refresh="loadpullMore(randomnumber)"
+                       spinner="android">
+        </ion-refresher>
+
+
+        <label class="item item-input" style="padding-top:3px; padding-bottom:4px;">
+            <span class="input-label">Total number of Location selected: {{LocationCodeList.length}}</span> 
+        </label>
+
+          
+        <ion-list>        
+            <ion-item class="item-text-wrap item" ng-repeat="loc in LocationCodeList" ng-style="{'background-color': testbgcolor(loc.starttime,loc.endtime)}" ng-click="getItemList(loc.Location,loc.starttime,loc.endtime,loc.seqid);itemsetupmodal.show();" >
+                
+                <div class="row no-padding">
+                    <div class="col col-100 no-padding">
+                    <label class="item">
+                    {{$index + 1}}:  <h float="margin-right">{{loc.Location}}</h>
+                </label>
+            </div>
+                </div>
+                  
+                    
+                        <div class="row no-padding">
+                            <div class="col col-100 no-padding">
+                                <label class="item">
+                                   
+                                        {{showstart(loc.starttime)}}
+                                    </label>  
+                            
+                            </div>
+                           
+                         
+                        </div>
+
+                               
+            </ion-item>     
+        </ion-list>
+
+
+
+        <div class="row no-padding">
+            <div class="col col-50 no-padding">
+                <label class="item">
+                <button class="button button-block button-positive" ng-disabled="postDisabled()" ng-click = "postccid(ccid)"  type="button" >
+                    POST
+                </button>
+            </label>
+            </div>
+            <div class="col col-50 no-padding">
+                <label class="item"> 
+                <button class="button button-block button-assertive"  ng-click = "cancelccid(ccid)"  type="button" >
+                    CANCEL
+                </button>
+            </label>
+            </div>
+         
+        </div>
+
+
+    </ion-content>
+
+</ion-view>
+
+
+<script id="templates/itemsetupmodal.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">Location {{itemMaster.Location}} </h1>
+            
+            <button class="button button-clear button-primary" ng-click="resetItemMaster();itemsetupmodal.hide();"><span class="icon ion-close"></span></button>
+        </ion-header-bar>
+        <ion-content class="padding">
+            <div class="row no-padding">
+                <div class="col col-40 no-padding">
+                    <label class="item">
+                   
+                        <p ng-hide="!showbuttonstart(itemMaster.start);"> Start Time</p>
+                    </label>
+                </div>
+                <div class="col col-60 no-padding">
+                    <label class="item">
+                   
+                        <p ng-hide="!showbuttonstart(itemMaster.start);"> {{itemMaster.start}} </p>
+                    </label>
+                </div>
+                    
+            </div>
+                
+            <div class="row no-padding">
+             
+                
+                    <button  class="button button-block button-balanced" ng-hide="!showbuttonAdd(itemMaster.start,itemMaster.end);" ng-click="showpic();additemsetupmodal.show();ClearItemData();" type="button" >ADD ITEM </button>
+                </div>
+             
+                <div class="row no-padding">
+                   
+                    <button class="button button-block button-assertive" ng-disabled="showbuttonend(itemMaster.end);" ng-hide="showbuttonend(itemMaster.end);"  ng-click = "endcyclecount(itemMaster.Location);"  type="button" >
+                        DONE
+                    </button>
+                </div> 
+              
+           
+               
+            <label class="item" ng-hide = "!showitems();">
+            <span>  
+                    
+                <p><strong>BLANK</strong> </p>    
+                             
+            </span>
+        </label>
+        
+    
+            <ion-list ng-hide = "showitems();">
+              
+                
+                <ion-item class="item-text-wrap item" ng-repeat="item in itemCodeList" style="text-decoration:none;" ng-click="itemFree(item.ITMCDE);getItem(item.endtime);" >
+                 
+                    <p>{{$index + 1}}: <strong> {{item.ITMCDE}} - ({{item.DESC}})</strong></p>
+                
+                    <p>Quantity : <strong> {{item.ACTUALQTY}}</strong></p>
+                        
+                </ion-item>     
+                </ion-list>
+            
+                
+
+        </ion-content>
+    </ion-modal-view>
+</script>
+
+
+<script id="templates/edititemsetupmodal.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">Update</h1>
+            <button class="button button-clear button-primary" ng-click="resetItem();edititemsetupmodal.hide();"><span class="icon ion-close"></span></button>
+        </ion-header-bar>
+        <ion-content class="padding">
+           
+                <label class="item item-input-inset">
+               
+                    <span class="input-label">Item Code</span>
+                   <label class="item item-input-wrapper"> {{itemSelected.ITMCDE}}
+                </label>
+                </label>
+
+                <label class="item item-text-wrap">
+               
+                    <span>Item Description</span>
+                    <br>
+                    <label  class="item item-input-wrapper"> {{itemSelected.DESC}}
+                    </label>
+               
+                   
+                </label>
+                
+                <div class="item item-input-inset">
+                    <span class="input-label">Quantity</span>
+                
+                        <input style="width: 100%;
+                        padding-right: 8px;
+                        padding-left: 8px;            
+                        background-color: #FFFFFF;
+                        resize: none;
+                        border-width: thin;
+                        border-style: solid;
+                        border-radius: 3px;" type="number" ng-model="itemSelected.ACTUALQTY" ng-disabled="itemSelected.ITMCDE.$invalid">
+                        
+                </div>
+        
+                <div class="item item-input-inset">
+                    <div class="row no-padding">
+                        <div class="col col-30">         
+                            <span class="input-label">Photo</span>                                   
+                        
+                        </div>
+                         
+                        <div class="col col-60">
+                              <img ng-click="OpenCamera()" ng-hide="defaultpic();" width="180" height="180" ng-src="./img/amoa.png"/>     
+                                <img ng-click="OpenCamera()" ng-hide="camerapic();" width="180" height="180" ng-src="data:image/JPEG;base64,{{itemSelected.photo}}"/>    
+                                <img ng-click="OpenCamera()" ng-hide="pathpic();" width="180" height="180" ng-src="{{itemSelected.path}}"/>                               
+                                <input ng-hide="true"  ng-model="itemSelected.photo" type="text" uppercased placeholder="New Image">
+                                <button ng-click="OpenCamera()"  class="button button-small" type="button"><span class="icon ion-ios-camera" ></span></button>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+
+                <div class="item item-input-inset">
+                    <span class="input-label">REMARKS</span>
+                  <!--  <label class="item-input-wrapper"> -->
+                        <textarea style="width: 100%;
+                        padding-right: 8px;
+                        padding-left: 8px;            
+                        background-color: #FFFFFF;
+                        resize: none;
+                        border-width: thin;
+                        border-style: solid;
+                        border-radius: 3px; " rows="4" ng-model="itemSelected.REMARKS" ng-disabled="itemSelected.ITMCDE.$invalid" type="text" ></textarea>
+                    <!--    </label> -->
+                </div>
+
+            
+            
+            <div class="row no-padding">
+                <div class="col col-50">
+                    <button class="button button-block button-balanced" type="button" ng-click="UpdateItem()" ng-disabled="itemSelected.ITMCDE.$invalid && itemSelected.ITMCDE.$invalid">
+                        Update
+                    </button>
+                </div>
+                <div class="col col-50">
+                    <button class="button button-block button-assertive" type="button" ng-click="RemoveItem()">
+                        Remove
+                    </button>
+                </div>
+            </div>
+            
+
+           
+
+        </ion-content>
+    </ion-modal-view>
+</script>
+
+
+<script id="templates/additemsetupmodal.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">Add</h1>
+            <button class="button button-clear button-primary" ng-click="additemsetupmodal.hide();"><span class="icon ion-close"></span></button>
+        </ion-header-bar>
+        <ion-content class="padding">
+            
+            
+            
+            
+
+            <div class="item item-input-inset">
+                <span class="input-label">Item Code</span>
+              
+                
+                
+                    <input style="width: 100%;
+                    padding-right: 8px;
+                    padding-left: 8px;            
+                    background-color: #FFFFFF;
+                    resize: none;
+                    border-width: thin;
+                    border-style: solid;
+                    border-radius: 3px;" type="text" ng-model="itemSelected.ITMCDE" ng-blur="itemFree(itemSelected.ITMCDE)" uppercased>
+              
+                <button style="
+                padding-right: 2px;        
+                background-color: #FFFFFF;
+                resize: none;
+                border-width: thin;
+                border-style: solid;
+                border-radius: 3px;" class="button button-small" type="button" ng-click="ScanBarcode()">
+                    <span class="icon ion-ios-barcode"></span>
+                </button>
+            </div>
+
+
+            <label class="item item-text-wrap" ng-hide = "showdescription">
+               
+                    <span>Item Description</span>
+                    <br>
+                    
+                    <label class="item item-input-wrapper"> {{itemSelected.DESC}}
+                    </label>
+                
+                   
+                </label>
+
+           
+            
+
+
+            <div class="item item-input-inset">
+                <span class="input-label">Quantity</span>
+              
+                    <input style="width: 100%;
+                    padding-right: 8px;
+                    padding-left: 8px;            
+                    background-color: #FFFFFF;
+                    resize: none;
+                    border-width: thin;
+                    border-style: solid;
+                    border-radius: 3px;" type="number" ng-model="itemSelected.ACTUALQTY" ng-disabled="itemSelected.ITMCDE.$invalid">
+                    
+            </div>
+    
+            <div class="item item-input-inset">
+                <div class="row no-padding">
+                    <div class="col col-30">         
+                        <span class="input-label">Photo</span>                                   
+                    
+                    </div>
+                     
+                    <div class="col col-60">         
+                           
+                        <img ng-click="OpenCamera()" ng-hide="defaultpic();" width="180" height="180" ng-src="./img/amoa.png"/>     
+                        <img ng-click="OpenCamera()" ng-hide="camerapic();" width="180" height="180" ng-src="data:image/JPEG;base64,{{itemSelected.photo}}"/>   
+                                                         
+                        <input ng-hide="true"  ng-model="itemSelected.photo" type="text" uppercased placeholder="New Image">
+                        <button ng-click="OpenCamera()"  class="button button-small" type="button"><span class="icon ion-ios-camera" ></span></button>
+                </div>
+                    
+                </div>
+            </div>
+            
+            <div class="item item-input-inset">
+                <span class="input-label">REMARKS</span>
+              <!--  <label class="item-input-wrapper"> -->
+                    <textarea style="width: 100%;
+                    padding-right: 8px;
+                    padding-left: 8px;            
+                    background-color: #FFFFFF;
+                    resize: none;
+                    border-width: thin;
+                    border-style: solid;
+                    border-radius: 3px; " rows="4" ng-model="itemSelected.REMARKS" ng-disabled="itemSelected.ITMCDE.$invalid" type="text" ></textarea>
+                <!--    </label> -->
+            </div>
+
+
+            
+
+           <!--
+
+
+           <label class="item item-input">
+                <span class="input-label">REMARKS</span>
+                <textarea rows="4" ng-model="itemSelected.REMARKS" ng-disabled="itemSelected.ITMCDE.$invalid" type="text" ></textarea>
+            </label>--> 
+            <div class="row no-padding">
+                <div class="col col-50">
+                    <button class="button button-block button-balanced" type="button" ng-click="AddItem()">
+                        Create
+                    </button>
+                </div>
+                <div class="col col-50">
+                    <button class="button button-block button-assertive" type="button" ng-click="ClearItemData()">
+                        Clear
+                    </button>
+                </div>
+            </div>
+
+
+
+            
+
+           
+
+        </ion-content>
+    </ion-modal-view>
+</script>
+
+
+
+
+
+

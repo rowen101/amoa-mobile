@@ -1,0 +1,138 @@
+<style>
+    .header .col {
+        background-color:lightgrey;
+    }
+
+    .col.cus {
+        border: solid 1px grey;
+        border-bottom-style: none;
+        border-right-style: none;
+    }
+
+    .col.cus:last-child {
+        border-right: solid 1px grey;
+    }
+
+    .row.cus:last-child .col {
+        border-bottom: solid 1px grey;
+    }
+
+    break{
+        word-wrap: break-word;
+    }
+
+    .item-selected{
+        background: #0af906 !important;
+    }
+
+    .flex{
+        display: flex;
+        align-items: center
+    }
+
+</style>
+
+<ion-view view-title="Stock Replenishment">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear" ng-click="goBack()" style="margin-right:5px">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+        <button class="button button-icon ion-share" ng-click="replenishlocmodal.show();clearLocation();">
+        </button>
+    </ion-nav-buttons>
+
+
+
+    <ion-content class="has-header padding">
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="GetReplenishmentBatchInventory()" spiner="android">
+        </ion-refresher>
+        <div style="padding-left:10px;">
+            <div class="row">
+                <div class="col">
+                    <p>Item : {{item.ItemCode}} - {{item.ItemDescription}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Suggested Qty : {{suggestedQty}}</p>
+                </div>
+                <div class="col">
+                    <p>Selected Qty : {{selectedQty}}</p>
+                </div>
+            </div>
+
+
+        </div>
+        <ion-list>
+
+            <div class="row cus header">
+                <div class="col cus col-10" style="text-align:center;"><span class="icon ion-checkmark-circled"></span></div>
+                <div class="col cus col-20">Loc</div>
+                <div class="col cus col-20">Batch no</div>
+                <div class="col cus col-20">Lot</div>
+                <div class="col cus col-20">Expry</div>
+                <div class="col cus col-10">Qty</div>
+            </div>
+            <div class="row cus" ng-repeat="item in batchInvList | filter : searchParam ">
+                <div class="col cus col-10 flex {{item.isSelected == true ? 'item-selected' : ''}}" ng-click="ValidateIndex(item.BatchNo)">
+                    <div style="color:white; font-size:1.6em; margin:0 auto;" class="icon ion-checkmark-circled" ng-show="item.isSelected"></div>
+                </div>
+                <div class="col cus col-20">{{item.LocationCode}}</div>
+                <div class="col cus col-20">{{item.BatchNo}}</div>
+                <div class="col cus col-20">{{item.LotNo}}</div>
+                <div class="col cus col-20">{{item.ExpiryDate | date}}</div>
+                <div class="col cus col-10">{{item.BatchQty}}</div>
+            </div>
+        </ion-list>
+    </ion-content>
+
+</ion-view>
+
+
+<script id="templates/replenishlocmodal.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">Pickface Destination</h1>
+            <button class="button button-clear button-primary" ng-click="replenishlocmodal.hide();clearLocation();"><span class="icon ion-close"></span></button>
+        </ion-header-bar>
+        <ion-content class="padding">
+            <div class="list">
+                <form name="searchLocForm" ng-submit="SetSuggestedLoc(location.suggetedLocation)">
+                    <div class="input-dropdown" >
+                        <row>
+                            <col>Fixbin : {{item.FixBin}}</col>
+                        </row>
+
+                    <div class="item item-input-inset">
+                        <label class="item-input-wrapper">
+                            <input ng-model="location.suggetedLocation" ng-change="CheckIfLocationExist(location.suggetedLocation)" type="text" uppercased placeholder="Location Code">
+                        </label>
+                        <button class="button button-small" type="button" ng-click="ScanSuggestedLocationBarcode()"><span class="icon ion-ios-barcode"></span></button>
+
+
+                    </div>
+                    <div class="dropdown" style="width: 100%;" ng-show="location.suggetedLocation.length > 0">
+                        <div ng-repeat="item in locationList | filter :{ LocationCode : location.suggetedLocation} |  limitTo: 10" ng-hide="location.suggetedLocation == location.setLocation">
+                            <div ng-click="SetSuggestedLoc(item.LocationCode)" >{{item.LocationCode}}</div>
+                        </div>
+                    </div>
+                    </div>
+                 </form>
+            
+            
+                <button class="button button-block button-positive" type="button" ng-disabled="!locationExist" ng-click="locationExist && ReplenishStock(location.suggetedLocation)">
+                    Replenish Item
+                </button>
+                   <p ng-show="showLocationMessage">Location does not exist!</p>
+               
+            </div>
+        </ion-content>
+    </ion-modal-view>
+</script>
+

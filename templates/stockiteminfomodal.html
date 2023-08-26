@@ -1,0 +1,96 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-positive">
+        <h4 class="title">{{item.BatchNo}} Info</h4>
+        <button class="button button-clear button-primary" ng-click="stockiteminfomodal.hide()">Cancel</button>
+    </ion-header-bar>
+    <ion-content class="padding">
+            <div class="row">
+                <div class="col">
+                    <p>Item Code :<strong> {{item.ItemCode}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>Location :<strong> {{item.LocationCode}}</strong></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <p>Desc. :<strong> {{item.ItemDescription}}</strong></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <p>BL No. :<strong> {{item.BatchNo}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>From BL No :<strong> {{item.SourceBatch}}</strong></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <p>RR # :<strong> {{item.RRNumber}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>Lot # :<strong> {{item.LotNo}}</strong></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <p>Batch Qty :<strong> {{item.BatchQty}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>UOM :<strong> {{item.UOM}}</strong></p>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <p>Is Active :<strong> {{item.ActiveFlag == 1 ? 'true' : 'false'}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>Freshness :<strong> {{item.StockFreshness|number:2}}%</strong></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <p>Mfg Date :<strong> {{item.ManufacturingDate | date}} </strong></p>
+                </div>
+                <div class="col">
+                    <p>Days from Mfg :<strong> {{item.DaysFromMfg}}</strong></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <p>Expiry Date :<strong> {{item.ExpiryDate | date}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>Days to Exp :<strong> {{item.DaysToExpiry}}</strong></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <p>Label Date :<strong> {{item.LabelDateTime | date}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>Date Transfered :<strong> {{item.DateTransfered | date}}</strong></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <p>Reference :<strong> {{item.RefereceNo}}</strong></p>
+                </div>
+                <div class="col">
+                    <p>Remarks :<strong> {{item.BatchRemarks}}</strong></p>
+                </div>
+            </div>
+
+            </ion-content>
+        </ion-modal-view>

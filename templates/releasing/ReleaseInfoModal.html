@@ -1,0 +1,63 @@
+<style>
+    .form-wrapper{
+      width:100%;
+      display:inline-block;
+      border:1px solid #ddd;
+      position:relative;
+      margin: 5px 0px;
+    }
+    
+    .form-wrapper 
+    input,
+    button {
+        background-color:transparent;
+        border:0;
+        padding: 5px;
+    }
+    
+    .form-wrapper input{
+      width:80%;
+      padding-right:30px; /* button padding */
+    }
+    
+    .form-wrapper button{
+        position:absolute;
+        width:15%;
+        right:0;
+        top:0;
+    }
+    
+    </style>
+    
+
+
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">More info of {{pickitemlist.ITMCDE}}
+            <span style="float:right; cursor:pointer" ng-click="ReleaseInfoModal.hide()"><span class="icon ion-close"></span></span>
+        </h1>
+    </ion-header-bar>
+    <ion-content class="padding">
+
+        <p> Request No. :<strong> {{pickitemlist.REQNUM}}</strong></p>
+        <p> Item Code :<strong> {{pickitemlist.ITMCDE}}</strong></p>
+        <p > Description : <strong>{{pickitemlist.ITMDSC}}</strong></p>
+        <p>per {{pickitemlist.UNTMS1}}</p>
+        <p ng-hide='pickitemlist.ISCASEPICK'>Scanned : {{pickitemlist.QTYSCANNED}}  / {{pickitemlist.QTYTOSCAN}}</p> 
+
+    
+
+       
+            <ion-list>
+                
+                <label class="item item-input item-stacked-label">
+                    <input type="number" name="qty" placeholder="Enter quantity to be release" ng-model="pickitemlist.qty"  ng-required>
+                </label>
+               
+            </ion-list>
+            <button class="button button-block"  type="button" ng-hide = "Scanshowadmin()" ng-click="ScanItemdata(pickitemlist)" ng-disabled="releasedtl.qty.$invalid">Scan <span style="float:right;" class="icon ion-ios-barcode" ></span></button>
+            <button class="button button-block button-positive" ng-show = "Scanshowadmin()" ng-click="OrderReleased(pickitemlist.ITMCDE,pickitemlist.qty)" ng-disabled="releasedtl.qty.$invalid">Pick Item </button>
+        
+
+    </ion-content>
+</ion-modal-view>

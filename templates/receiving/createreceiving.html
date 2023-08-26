@@ -1,0 +1,167 @@
+<ion-view view-title="Create Receiving">
+
+    <ion-nav-buttons side="left">
+        <!--<button class="button button-icon button-clear" ui-sref="app.home" style="margin-right:5px">-->
+        <button class="button button-icon button-clear" ng-click="goBack()">
+            <i class="icon ion-chevron-left"></i>
+        </button>
+
+        <button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+
+    </ion-nav-buttons>
+    <ion-content class="has-header padding">
+            
+               
+        <div class="list">
+           
+
+           
+
+                    
+    
+                   
+               
+            <label class="item item-input item-select option">
+                <div class="input-label">RR Type</div>
+                <select ng-model="receive.rrtype" readonly
+                  ng-options="item.DRPDATA as (item.DRPDISPLAY) for item in ddReceiverType">
+                </select>
+              </label>
+                   
+
+           
+            <label class="item item-input">
+                <span class="input-label">Date Received</span>
+                <input type="text" ng-model="receive.datereceived" ng-click="ReceivedDatePicker()" readonly >
+            </label>
+           
+
+            <label class="item item-input item-select" >
+                <div class="input-label">Supplier</div>
+                <input type="text" ng-model="receive.suppliername" ng-click="OpenModal()"  readonly >
+              
+             
+       <!--        <label class="item item-input item-select">
+                <div class="input-label">Supplier</div>
+                <input type="text" ng-model="receive.suppliername" ng-click="OpenModal()" readonly >
+             
+<select ng-model="receive.supplier" readonly
+                  ng-options="(item.SupplierName) for item in supplier">
+                </select>
+
+               --> 
+              </label>
+
+           
+
+            <label class="item item-input">
+                <span class="input-label">Remarks</span>
+                <textarea rows="4" ng-model="receive.remarks" type="text"></textarea>
+            </label>
+
+
+            <label class="item item-input">
+                
+                <span class="input-label">Document No.</span>
+                <input type="text"  ng-model="receive.doc">
+                
+            </label>
+
+
+            <label class="item item-input">
+                
+                <span class="input-label">Reference No.</span>
+                <input type="text"  ng-model="receive.reference" >
+                
+            </label>
+
+            <label class="item item-input">
+                
+                <span class="input-label">Reference Date</span>
+                <input type="text"  ng-model="receive.refdate" ng-click="ReferenceDatePicker()" readonly>
+                
+            </label>
+
+            <label class="item item-input">
+                
+                <span class="input-label">PO No.</span>
+                <input type="text"  ng-model="receive.po" >
+                
+            </label>
+
+           
+
+        
+
+            
+            
+
+            <div class="row no-padding">
+                <div class="col col-50 no-padding">
+                    <label class="item">
+                    <button class="button button-block button-positive" ng-disabled="createDisabled()" ng-click = "CreateReceive()"  type="button" >
+                       Submit
+                    </button>
+                </label>
+                </div>
+                <div class="col col-50 no-padding">
+                    <label class="item"> 
+                    <button class="button button-block button-assertive"  ng-click = "ResetData()"  type="button" >
+                       Reset
+                    </button>
+                </label>
+                </div>
+             
+            </div>
+
+
+        </div>
+    
+</ion-content>
+</ion-view>
+
+
+<script id="templates/suppliermodal.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">Suppliers List</h1>
+            <button class="button button-clear button-primary" ng-click="HideModal();"><span class="icon ion-close"></span></button>
+        </ion-header-bar>
+
+
+        <form name="searchForm" ng-submit="GetOpenwrrhdr(searchParam)">
+            <div class="bar bar-subheader item-input-inset">
+                <label class="item-input-wrapper">
+                    <i class="icon ion-ios-search placeholder-icon"></i>
+                    <input type="search" placeholder="Search" ng-model="searchParam" uppercased>
+                </label>
+                
+            </div>
+        </form>
+        <ion-content class="has-header has-subheader padding">
+        
+            <ion-list>        
+                <ion-item class="item-text-wrap item" ng-repeat="item in supplier | filter:searchParam" style="text-decoration:none;"  ng-click="redirectMe(item.SupplierName,item.SupplierCode)" >
+    
+                    <div class="row">
+                        
+                        <div class="col-100">
+                            <p> {{item.SupplierName}}</p>
+                          
+                        </div>
+                    </div>
+    
+                   
+                </ion-item>       
+            </ion-list>
+        </ion-content>
+
+
+
+    </ion-modal-view>
+</script> 
+

@@ -1,0 +1,268 @@
+<style>
+    .sub-menu {
+        padding-left: 73px !important;
+    }
+
+    .sub-icon {
+        left: 30px !important;
+    }
+
+    .sub-sub-menu {
+        padding-left: 93px !important;
+    }
+
+    .sub-sub-icon {
+        left: 50px !important;
+    }
+
+    .active-custom {
+        background: #387ef5 !important;
+        color: #FFFFFF !important;
+    }
+</style>
+<!--<ion-side-menus enable-menu-with-back-views="true">-->
+<ion-side-menus enable-menu-with-back-views="true">
+    <ion-side-menu-content drag-content="true">
+        <ion-nav-bar class="bar-positive">
+            <!--<ion-nav-back-button>
+</ion-nav-back-button>-->
+
+            <!--<ion-nav-buttons side="right">
+<button ng-show="isLogged" class="button button-icon button-clear ion-navicon" menu-toggle="right" >
+</button>
+</ion-nav-buttons>-->
+        </ion-nav-bar>
+        <ion-nav-view name="menuContent"></ion-nav-view>
+    </ion-side-menu-content>
+
+    <ion-side-menu side="left">
+        <ion-header-bar class="bar-calm">
+            <h1 class="title">Menu</h1>
+        </ion-header-bar>
+        <ion-content>
+            <ion-list>
+
+                <ion-item class="item-icon-left" menu-toggle ng-click="redirectMe('home')">
+                    <i class="icon ion-home"></i>Home
+                </ion-item>
+
+
+
+                <ion-item ng-repeat="item in parentList" class="item-icon-left" menu-toggle ng-click="redirectMe({{item.stage}});toggleDropdown('none');toggleSubDropdown('none')">
+                    <i class="{{item.icon}}"></i>{{item.name}}
+                </ion-item>
+
+
+
+                <ion-item ng-if="orderpickingList.length != 0" class="item-icon-left" ng-class="{'active-custom' : dropdown == 'picking'}"
+                    ng-click="toggleDropdown('picking')">
+                    <i class="icon ion-chevron-down"></i> Order Picking
+                </ion-item>
+
+                <!-- Item Picking Items -->
+                <ion-item ng-show="itempickingList.length != 0 && dropdown == 'picking'" class="item-icon-left sub-menu" ng-class="{'active-custom' : subDropdown == 'itempicking'}"
+                    ng-click="toggleSubDropdown('itempicking')">
+                    <i class="icon ion-chevron-down sub-icon"></i> By Item
+                </ion-item>
+
+                <div ng-if="itempickingList.length != 0  && dropdown == 'picking'" ng-show="subDropdown == 'itempicking'">
+                    <ion-item ng-repeat="item in itempickingList" class="item-icon-left sub-sub-menu" menu-toggle ng-click="redirectMe({{item.stage}})">
+                        <i class="{{item.icon}}"></i> {{item.name}}
+                    </ion-item>
+                </div>
+
+                <!-- Location Picking Items -->
+                <ion-item ng-show="locationpickingList.length != 0 && dropdown == 'picking'" class="item-icon-left sub-menu" ng-class="{'active-custom' : subDropdown == 'locpicking'}"
+                    ng-click="toggleSubDropdown('locpicking')">
+                    <i class="icon ion-chevron-down sub-icon"></i> By Location
+                </ion-item>
+
+                <div ng-if="locationpickingList.length != 0  && dropdown == 'picking'" ng-show="subDropdown == 'locpicking'">
+
+                    <ion-item ng-repeat="item in locationpickingList" class="item-icon-left sub-sub-menu" menu-toggle ng-click="redirectMe({{item.stage}})">
+                        <i class="{{item.icon}}"></i> {{item.name}}
+                    </ion-item>
+                </div>
+
+                <!-- Wave Picking Items -->
+                <ion-item ng-show="wavepickingList.length != 0 && dropdown == 'picking'" class="item-icon-left sub-menu" ng-class="{'active-custom' : subDropdown == 'wave'}"
+                    ng-click="toggleSubDropdown('wave')">
+                    <i class="icon ion-chevron-down sub-icon"></i> Wave Pick
+                </ion-item>
+
+                <div ng-if="wavepickingList.length != 0  && dropdown == 'picking'" ng-show="subDropdown == 'wave'">
+
+                    <ion-item ng-repeat="item in wavepickingList" class="item-icon-left sub-sub-menu" menu-toggle ng-click="redirectMe({{item.stage}})">
+                        <i class="{{item.icon}}"></i> {{item.name}}
+                    </ion-item>
+                </div>
+
+                
+
+                <!-- Load Plan Picking Items 
+
+                <div ng-if="loadplanpick.length != 0  && dropdown == 'picking'" >
+
+                    <ion-item ng-repeat="item in loadplanpick" class="item-icon-left sub-sub-menu" menu-toggle ng-click="redirectMe({{item.stage}})">
+                        <i class="{{item.icon}}"></i> {{item.name}}
+                    </ion-item>
+                </div>-->
+
+
+              
+
+
+                <!-- Order picking items -->
+                <div ng-if="orderpickingList.length != 0" ng-show=" dropdown == 'picking'">
+                    <ion-item ng-repeat="odp in orderpickingList" class="item-icon-left sub-menu" menu-toggle ng-click="redirectMe({{odp.stage}})">
+                        <i class="{{odp.icon}}"></i> {{odp.name}}
+                    </ion-item>
+
+               
+
+
+                    <!--{{orderpickingList | json}}-->
+                </div>
+
+
+                <!-- Voice Picking items -->
+                <ion-item ng-show="voicepickingList.length != 0" class="item-icon-left" ng-class="{'active-custom' : dropdown == 'voicepicking'}"
+                    ng-click="toggleDropdown('voicepicking')">
+                    <i class="icon ion-chevron-down"></i> Voice Picking
+                </ion-item>
+
+                <ion-item ng-show="vpLocationlist.length != 0 && dropdown == 'voicepicking'" class="item-icon-left sub-menu" ng-class="{'active-custom' : subDropdown == 'vplocation'}"
+                    ng-click="toggleSubDropdown('vplocation')">
+                    <i class="icon ion-chevron-down sub-icon"></i> By Location
+                </ion-item>
+
+                <div ng-if="vpLocationlist.length != 0  && dropdown == 'voicepicking'" ng-show="subDropdown == 'vplocation'">
+                    <ion-item ng-repeat="item in vpLocationlist" class="item-icon-left sub-sub-menu" menu-toggle ng-click="redirectMe({{item.stage}})">
+                        <i class="{{item.icon}}"></i> {{item.name}}
+                    </ion-item>
+                </div>
+
+                <ion-item ng-show="ordercheckingList.length != 0" class="item-icon-left" ng-class="{'active-custom' : dropdown == 'checking'}"
+                    ng-click="toggleDropdown('checking')">
+                    <i class="icon ion-chevron-down"></i> Order Checking
+                </ion-item>
+
+                <div ng-if="ordercheckingList.length != 0" ng-show="dropdown == 'checking'">
+
+                    <ion-item ng-repeat="item in ordercheckingList" class="item-icon-left sub-menu" menu-toggle ng-click="redirectMe({{item.stage}})">
+                        <i class="{{item.icon}}"></i> {{item.name}}
+                    </ion-item>
+                    <!--{{ordercheckingList | json}}-->
+                </div>
+
+
+
+                <ion-item ng-show="stagingList.length != 0" class="item-icon-left" ng-class="{'active-custom' : dropdown == 'staging'}"
+                    ng-click="toggleDropdown('staging')">
+                    <i class="icon ion-chevron-down"></i> Order Staging
+                </ion-item>
+
+                <div ng-if="stagingList.length != 0" ng-show="dropdown == 'staging'">
+
+                    <ion-item ng-repeat="item in stagingList" class="item-icon-left sub-menu" menu-toggle ng-click="redirectMe({{item.stage}})">
+                        <i class="{{item.icon}}"></i> {{item.name}}
+                    </ion-item>
+                    <!--{{ordercheckingList | json}}-->
+                </div>
+
+
+                <ion-item ng-show="orderreleasingList.length != 0" class="item-icon-left" ng-class="{'active-custom' : dropdown == 'releasing'}"
+                    ng-click="toggleDropdown('releasing')">
+                    <i class="icon ion-chevron-down"></i> Order Releasing
+                </ion-item>
+
+                <div ng-if="orderreleasingList.length != 0" ng-show="dropdown == 'releasing'">
+
+                    <ion-item ng-repeat="item in orderreleasingList" class="item-icon-left sub-menu" menu-toggle ng-click="redirectMe({{item.stage}})">
+                        <i class="{{item.icon}}"></i> {{item.name}}
+                    </ion-item>
+                    <!--{{ordercheckingList | json}}-->
+                </div>
+
+
+                <ion-item ng-show="inquiryMenuList.length != 0" class="item-icon-left" ng-class="{'active-custom' : dropdown == 'inquiry'}"
+                    ng-click="toggleDropdown('inquiry')">
+                    <i class="icon ion-chevron-down"></i> Inquiry
+                </ion-item>
+
+                <div ng-if="inquiryMenuList.length != 0" ng-show="dropdown == 'inquiry'">
+
+                    <ion-item ng-repeat="item in inquiryMenuList" class="item-icon-left sub-menu" menu-toggle ng-click="redirectMe({{item.stage}})">
+                        <i class="{{item.icon}}"></i> {{item.name}}
+                    </ion-item>
+                </div>
+
+                    <!--{{Receiving | json}}-->
+                <ion-item ng-show="receiveList.length != 0" class="item-icon-left" ng-class="{'active-custom' : dropdown == 'Receiving'}"
+                    ng-click="toggleDropdown('Receiving')">
+                    <i class="icon ion-chevron-down"></i> Receiving
+                </ion-item>
+
+
+
+                <ion-item ng-show="viewreceivinglist.length != 0 && dropdown == 'Receiving'" class="item-icon-left sub-menu" ng-class="{'active-custom' : subDropdown == 'vReceiving'}"
+                ng-click="toggleSubDropdown('vReceiving')">
+                <i class="icon ion-chevron-down sub-icon"></i> View
+            </ion-item>
+
+            <div ng-if="viewreceivinglist.length != 0  && dropdown == 'Receiving'" ng-show="subDropdown == 'vReceiving'">
+                <ion-item ng-repeat="item in viewreceivinglist" class="item-icon-left sub-sub-menu" menu-toggle ng-click="redirectMe({{item.stage}})">
+                    <i class="{{item.icon}}"></i> {{item.name}}
+                </ion-item>
+            </div>
+
+
+
+
+                <div ng-if="receiveList.length != 0" ng-show="dropdown == 'Receiving'">
+
+                    <ion-item ng-repeat="item in receiveList" class="item-icon-left sub-menu" menu-toggle ng-click="redirectMe({{item.stage}})">
+                        <i class="{{item.icon}}"></i> {{item.name}}
+                    </ion-item>
+                </div>
+
+
+
+
+                <!--{{Administration | json}}-->
+
+
+                <ion-item ng-show="admin.length != 0" class="item-icon-left" ng-class="{'active-custom' : dropdown == 'admin'}"
+                    ng-click="toggleDropdown('admin')">
+                    <i class="icon ion-chevron-down"></i> Administration
+                </ion-item>
+
+
+
+                <ion-item ng-show="zonelist.length != 0 && dropdown == 'admin'" class="item-icon-left sub-menu" ng-class="{'active-custom' : subDropdown == 'azone'}"
+                ng-click="toggleSubDropdown('azone')">
+                <i class="icon ion-chevron-down sub-icon"></i> Zone
+                </ion-item>
+                
+            <div ng-if="zonelist.length != 0  && dropdown == 'admin'" ng-show="subDropdown == 'azone'">
+                <ion-item ng-repeat="item in zonelist" class="item-icon-left sub-sub-menu" menu-toggle ng-click="redirectMe({{item.stage}})">
+                    <i class="{{item.icon}}"></i> {{item.name}}
+                </ion-item>
+            </div>
+
+
+
+               
+
+
+                
+
+
+
+                <ion-item class="item-icon-left" menu-toggle ng-click="LogOut()">
+                    <i class="icon ion-log-out"></i> LOGOUT
+                </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>

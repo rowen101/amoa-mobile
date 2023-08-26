@@ -1,0 +1,63 @@
+<style>
+    .form-wrapper {
+        width: 100%;
+        display: inline-block;
+        border: 1px solid #ddd;
+        position: relative;
+        margin: 5px 0px;
+    }
+
+    .form-wrapper input,
+    button {
+        background-color: transparent;
+        border: 0;
+        padding: 5px;
+    }
+
+    .form-wrapper input {
+        width: 80%;
+        padding-right: 30px;
+        /* button padding */
+    }
+
+    .form-wrapper button {
+        position: absolute;
+        width: 15%;
+        right: 0;
+        top: 0;
+    }
+</style>
+
+
+
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Server Link
+            <span style="float:right; cursor:pointer" ng-click="closeSetting()"><span class="icon ion-close"></span></span>
+        </h1>
+    </ion-header-bar>
+    <ion-content class="padding">
+
+
+        <form name="urlForm">
+            <div class="row">
+                <div class="col">
+                    <label class="item item-input">
+                        <input type="text" placeholder="URL" ng-model="apiUrl" required ng-change="UrlChanged()">
+                      </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="button button-block button-outline button-positive" ng-click="TestServer(apiUrl)" ng-disabled="urlForm.$invalid">Test Connection </button>
+                </div>
+                <div class="col">
+                      
+                    <button class="button button-block button-positive" ng-click="SaveUrl(apiUrl)" ng-disabled="!validServer">  Save</button>
+                </div>
+            </div>
+
+        </form>
+        <p ng-show="!validServer">Please enter a valid Url</p>
+    </ion-content>
+</ion-modal-view>
